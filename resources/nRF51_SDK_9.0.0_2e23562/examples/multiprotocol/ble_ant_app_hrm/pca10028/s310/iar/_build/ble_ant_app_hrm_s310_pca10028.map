@@ -1,0 +1,472 @@
+###############################################################################
+#
+# IAR ELF Linker V7.30.4.8167/W32 for ARM                 07/Oct/2015  22:00:12
+# Copyright 2007-2014 IAR Systems AB.
+#
+#    Output file  =  
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\ble_ant_app_hrm_s310_pca10028.out
+#    Map file     =  
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\ble_ant_app_hrm_s310_pca10028.map
+#    Command line =  
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\ant_stack_config.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\app_button.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\app_error.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\app_timer.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\app_trace.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\app_uart.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\ble_advdata.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\ble_bas.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\ble_conn_params.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\ble_dis.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\ble_hrs.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\ble_srv_common.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\bsp.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\device_manager_peripheral.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\iar_startup_nrf51.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\main.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\nrf_assert.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\nrf_delay.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\nrf_drv_common.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\nrf_drv_gpiote.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\pstorage.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\retarget.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\sensorsim.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\softdevice_handler.o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\system_nrf51.o
+#        --redirect _Printf=_PrintfFull --redirect _Scanf=_ScanfFull -o
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\ble_ant_app_hrm_s310_pca10028.out
+#        --map
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build\ble_ant_app_hrm_s310_pca10028.map
+#        --config
+#        C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\ble_ant_app_hrm_iar_nrf51.icf
+#        --warnings_are_errors --entry __iar_program_start --inline --vfe
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor       = *
+__SystemLibrary = DLib
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A1":  place at 0x0001d000 { ro section .intvec };
+"P1":  place in [from 0x0001d000 to 0x0003ffff] { ro };
+"P2":  place in [from 0x20002200 to 0x20007fff] { rw, block CSTACK, block HEAP };
+
+  Section            Kind        Address    Size  Object
+  -------            ----        -------    ----  ------
+"A1":                                       0xc0
+  .intvec            ro code  0x0001d000    0xc0  iar_startup_nrf51.o [1]
+                            - 0x0001d0c0    0xc0
+
+"P1":                                     0x2630
+  .text              ro code  0x0001d0c0   0x790  app_timer.o [1]
+  .text              ro code  0x0001d850    0x18  app_error.o [1]
+  .text              ro code  0x0001d868   0x494  main.o [1]
+  .text              ro code  0x0001dcfc   0x3d4  bsp.o [1]
+  .text              ro code  0x0001e0d0    0x34  ABImemset.o [4]
+  .text              ro code  0x0001e104   0x3f6  ble_advdata.o [1]
+  .text              ro code  0x0001e4fa    0x2a  zero_init3.o [4]
+  .text              ro code  0x0001e524   0x308  ble_hrs.o [1]
+  .text              ro code  0x0001e82c    0x12  ble_srv_common.o [1]
+  .text              ro code  0x0001e83e     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001e840   0x26c  ble_dis.o [1]
+  .text              ro code  0x0001eaac   0x19c  ble_conn_params.o [1]
+  .text              ro code  0x0001ec48   0x13c  softdevice_handler.o [1]
+  .text              ro code  0x0001ed84    0x24  ant_stack_config.o [1]
+  .text              ro code  0x0001eda8    0xae  I32DivModFast.o [4]
+  .text              ro code  0x0001ee56     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001ee58   0x148  app_button.o [1]
+  .text              ro code  0x0001efa0    0x5c  ABImemcpy.o [4]
+  .text              ro code  0x0001effc    0x26  ABImemmove.o [4]
+  .text              ro code  0x0001f022    0x10  strlen.o [4]
+  .text              ro code  0x0001f032     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f034   0x38c  nrf_drv_gpiote.o [1]
+  .text              ro code  0x0001f3c0    0x54  nrf_drv_common.o [1]
+  .text              ro code  0x0001f414   0x134  app_uart.o [1]
+  .text              ro code  0x0001f548    0x7c  system_nrf51.o [1]
+  .text              ro code  0x0001f5c4    0x30  copy_init3.o [4]
+  .text              ro code  0x0001f5f4    0x2c  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f620    0x28  data_init.o [4]
+  .iar.init_table    const    0x0001f648    0x24  - Linker created -
+  .text              ro code  0x0001f66c    0x1a  cmain.o [4]
+  .text              ro code  0x0001f686     0x8  exit.o [3]
+  .text              ro code  0x0001f68e     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f690     0xa  cexit.o [4]
+  .text              ro code  0x0001f69a     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f69c     0xc  XXexit.o [4]
+  .text              ro code  0x0001f6a8     0xc  cstartup_M.o [4]
+  .text              ro code  0x0001f6b4     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6b6     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6b8     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6ba     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6bc     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6be     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6c0     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6c2     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6c4     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6c6     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6c8     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6ca     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6cc     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6ce     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6d0     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6d2     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6d4     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6d6     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6d8     0x2  iar_startup_nrf51.o [1]
+  .text              ro code  0x0001f6da     0x2  iar_startup_nrf51.o [1]
+  .rodata            const    0x0001f6dc     0x0  zero_init3.o [4]
+  .rodata            const    0x0001f6dc     0x0  copy_init3.o [4]
+  Initializer bytes  const    0x0001f6dc    0x14  <for P2 s0>
+                            - 0x0001f6f0  0x2630
+
+"P2":                                      0xd50
+  P2 s0                       0x20002200    0x14  <Init block>
+    .data            inited   0x20002200     0xc  app_uart.o [1]
+    .data            inited   0x2000220c     0x4  system_nrf51.o [1]
+    .data            inited   0x20002210     0x2  main.o [1]
+  .bss               zero     0x20002214   0x334  main.o [1]
+  .bss               zero     0x20002548    0x80  ant_stack_config.o [1]
+  .bss               zero     0x200025c8    0x4c  ble_dis.o [1]
+  .bss               zero     0x20002614    0x4c  nrf_drv_gpiote.o [1]
+  .bss               zero     0x20002660    0x3c  softdevice_handler.o [1]
+  .bss               zero     0x2000269c    0x2c  bsp.o [1]
+  .bss               zero     0x200026c8    0x24  app_timer.o [1]
+  .bss               zero     0x200026ec    0x24  ble_conn_params.o [1]
+  .bss               zero     0x20002710    0x18  app_button.o [1]
+  .bss               zero     0x20002728    0x18  main.o [1]
+  .bss               zero     0x20002740     0x8  ble_conn_params.o [1]
+  .bss               zero     0x20002748     0x8  ble_conn_params.o [1]
+  CSTACK                      0x20002750   0x800  <Block>
+    CSTACK           uninit   0x20002750   0x800  <Block tail>
+                            - 0x20002f50   0xd50
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address     Size
+          -------     ----
+Zero (__iar_zero_init3)
+    1 destination range, total size 0x53c:
+          0x20002214  0x53c
+
+Copy (__iar_copy_init3)
+    1 source range, total size 0x14 (111% of destination):
+          0x0001f6dc   0x14
+    1 destination range, total size 0x12:
+          0x20002200   0x12
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                ro code  ro data  rw data
+    ------                -------  -------  -------
+C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build: [1]
+    ant_stack_config.o         36               128
+    app_button.o              328                24
+    app_error.o                24
+    app_timer.o             1 936                36
+    app_uart.o                308       12       12
+    ble_advdata.o           1 014
+    ble_conn_params.o         412                52
+    ble_dis.o                 620                76
+    ble_hrs.o                 776
+    ble_srv_common.o           18
+    bsp.o                     980                44
+    iar_startup_nrf51.o       286
+    main.o                  1 172        2      846
+    nrf_drv_common.o           84
+    nrf_drv_gpiote.o          908                76
+    softdevice_handler.o      316                60
+    system_nrf51.o            124        4        4
+    -----------------------------------------------
+    Total:                  9 342       18    1 358
+
+command line: [2]
+    -----------------------------------------------
+    Total:
+
+dl6M_tlf.a: [3]
+    exit.o                      8
+    -----------------------------------------------
+    Total:                      8
+
+rt6M_tl.a: [4]
+    ABImemcpy.o                92
+    ABImemmove.o               38
+    ABImemset.o                52
+    I32DivModFast.o           174
+    XXexit.o                   12
+    cexit.o                    10
+    cmain.o                    26
+    copy_init3.o               48
+    cstartup_M.o               12
+    data_init.o                40
+    strlen.o                   16
+    zero_init3.o               42
+    -----------------------------------------------
+    Total:                    562
+
+    Linker created                      38    2 048
+---------------------------------------------------
+    Grand Total:            9 912       56    3 406
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                      Address   Size  Type      Object
+-----                      -------   ----  ----      ------
+.iar.init_table$$Base   0x0001f648          --   Gb  - Linker created -
+.iar.init_table$$Limit  0x0001f66c          --   Gb  - Linker created -
+?main                   0x0001f66d         Code  Gb  cmain.o [4]
+CSTACK$$Base            0x20002750          --   Gb  - Linker created -
+CSTACK$$Limit           0x20002f50          --   Gb  - Linker created -
+GPIOTE_IRQHandler       0x0001f2a5  0x102  Code  Gb  nrf_drv_gpiote.o [1]
+NVIC_ClearPendingIRQ    0x0001d0dd    0xe  Code  Lc  app_timer.o [1]
+NVIC_EnableIRQ          0x0001d0c1    0xe  Code  Lc  app_timer.o [1]
+NVIC_SetPendingIRQ      0x0001d0cf    0xe  Code  Lc  app_timer.o [1]
+NVIC_SetPriority        0x0001d0eb   0x32  Code  Lc  app_timer.o [1]
+RTC1_IRQHandler         0x0001d631   0x18  Code  Gb  app_timer.o [1]
+Region$$Table$$Base     0x0001f648          --   Gb  - Linker created -
+Region$$Table$$Limit    0x0001f66c          --   Gb  - Linker created -
+SWI0_IRQHandler         0x0001d649    0x8  Code  Gb  app_timer.o [1]
+SWI2_IRQHandler         0x0001ed5b   0x20  Code  Gb  softdevice_handler.o [1]
+SystemCoreClock         0x2000220c    0x4  Data  Gb  system_nrf51.o [1]
+SystemInit              0x0001f549   0x68  Code  Gb  system_nrf51.o [1]
+UART0_IRQHandler        0x0001f4b9   0x68  Code  Gb  app_uart.o [1]
+__Vectors               0x0001d000          --   Gb  iar_startup_nrf51.o [1]
+__Vectors_End           0x0001d0c0         Data  Gb  iar_startup_nrf51.o [1]
+__Vectors_Size {Abs}    0x000000c0          --   Gb  iar_startup_nrf51.o [1]
+__aeabi_memclr4         0x0001e101         Code  Gb  ABImemset.o [4]
+__aeabi_memclr8         0x0001e101         Code  Gb  ABImemset.o [4]
+__aeabi_memcpy          0x0001efa1         Code  Gb  ABImemcpy.o [4]
+__aeabi_memcpy4         0x0001efc9         Code  Wk  ABImemcpy.o [4]
+__aeabi_memmove         0x0001effd         Code  Gb  ABImemmove.o [4]
+__aeabi_memmove4        0x0001effd         Code  Gb  ABImemmove.o [4]
+__aeabi_memmove8        0x0001effd         Code  Gb  ABImemmove.o [4]
+__aeabi_uidiv           0x0001eda9         Code  Gb  I32DivModFast.o [4]
+__aeabi_uidivmod        0x0001eda9         Code  Gb  I32DivModFast.o [4]
+__cmain                 0x0001f66d         Code  Gb  cmain.o [4]
+__exit                  0x0001f69d         Code  Gb  XXexit.o [4]
+__iar_Memset4_word      0x0001e0d1         Code  Gb  ABImemset.o [4]
+__iar_copy_init3        0x0001f5c5   0x30  Code  Gb  copy_init3.o [4]
+__iar_data_init3        0x0001f621   0x28  Code  Gb  data_init.o [4]
+__iar_program_start     0x0001f6a9         Code  Gb  cstartup_M.o [4]
+__iar_zero_init3        0x0001e4fb   0x2a  Code  Gb  zero_init3.o [4]
+__vector_table          0x0001d000         Data  Gb  iar_startup_nrf51.o [1]
+_call_main              0x0001f679         Code  Gb  cmain.o [4]
+_exit                   0x0001f691         Code  Gb  cexit.o [4]
+_main                   0x0001f683         Code  Gb  cmain.o [4]
+action_tx_stop          0x0001f429   0x1c  Code  Gb  app_uart.o [1]
+action_uart_deactivate  0x0001f415   0x14  Code  Lc  app_uart.o [1]
+adv_data_encode         0x0001e33b  0x168  Code  Lc  ble_advdata.o [1]
+advertising_init        0x0001d8c1   0x5a  Code  Lc  main.o [1]
+alert_timer_handler     0x0001df91   0x14  Code  Lc  bsp.o [1]
+ant_and_adv_start       0x0001d881   0x40  Code  Lc  main.o [1]
+ant_stack_buffer        0x20002548   0x80  Data  Lc  ant_stack_config.o [1]
+ant_stack_static_config
+                        0x0001ed85   0x16  Code  Gb  ant_stack_config.o [1]
+app_button_enable       0x0001ef6f   0x20  Code  Gb  app_button.o [1]
+app_button_init         0x0001ef01   0x6e  Code  Gb  app_button.o [1]
+app_buttons             0x0001e0b0   0x20  Data  Lc  bsp.o [1]
+app_error_handler       0x0001d851   0x18  Code  Wk  app_error.o [1]
+app_timer_create        0x0001d6f7   0x44  Code  Gb  app_timer.o [1]
+app_timer_init          0x0001d651   0xa6  Code  Gb  app_timer.o [1]
+app_timer_start         0x0001d78d   0x4c  Code  Gb  app_timer.o [1]
+app_timer_stop          0x0001d7d9   0x58  Code  Gb  app_timer.o [1]
+assert_nrf_callback     0x0001d873    0xe  Code  Gb  main.o [1]
+ble_advdata_set         0x0001e4a3   0x58  Code  Gb  ble_advdata.o [1]
+ble_conn_params_init    0x0001eb19   0x4a  Code  Gb  ble_conn_params.o [1]
+ble_conn_params_on_ble_evt
+                        0x0001ebbb   0x7a  Code  Gb  ble_conn_params.o [1]
+ble_dis_init            0x0001e8e7  0x19a  Code  Gb  ble_dis.o [1]
+ble_evt_dispatch        0x0001daeb   0x1a  Code  Lc  main.o [1]
+ble_hrs_heart_rate_measurement_send
+                        0x0001e78d   0x58  Code  Gb  ble_hrs.o [1]
+ble_hrs_init            0x0001e739   0x54  Code  Gb  ble_hrs.o [1]
+ble_hrs_on_ble_evt      0x0001e52f   0x48  Code  Gb  ble_hrs.o [1]
+ble_hrs_rr_interval_add
+                        0x0001e7e5   0x38  Code  Gb  ble_hrs.o [1]
+ble_srv_ascii_to_utf8   0x0001e82d   0x12  Code  Gb  ble_srv_common.o [1]
+body_sensor_location_char_add
+                        0x0001e6bb   0x7e  Code  Lc  ble_hrs.o [1]
+bsp_button_event_handler
+                        0x0001dcfd   0x7a  Code  Lc  bsp.o [1]
+bsp_event_to_button_action_assign
+                        0x0001e04d   0x3c  Code  Gb  bsp.o [1]
+bsp_indication_set      0x0001dfa9   0x16  Code  Gb  bsp.o [1]
+bsp_init                0x0001dfc5   0x84  Code  Gb  bsp.o [1]
+bsp_led_indication      0x0001dd85  0x1f8  Code  Lc  bsp.o [1]
+button_timer_handler    0x0001dd77    0xc  Code  Lc  bsp.o [1]
+channel_free            0x0001f0fd   0x16  Code  Lc  nrf_drv_gpiote.o [1]
+channel_handler_get     0x0001f0ab    0x8  Code  Lc  nrf_drv_gpiote.o [1]
+channel_port_alloc      0x0001f0b3   0x4a  Code  Lc  nrf_drv_gpiote.o [1]
+channel_port_get        0x0001f0a1    0xa  Code  Lc  nrf_drv_gpiote.o [1]
+char_add                0x0001e84b   0x9c  Code  Lc  ble_dis.o [1]
+conn_int_encode         0x0001e1d1   0x8c  Code  Lc  ble_advdata.o [1]
+conn_params_error_handler
+                        0x0001d9c9    0xc  Code  Lc  main.o [1]
+conn_params_negotiation
+                        0x0001eb63   0x58  Code  Lc  ble_conn_params.o [1]
+detection_delay_timeout_handler
+                        0x0001ee59   0x5e  Code  Lc  app_button.o [1]
+exit                    0x0001f687    0x8  Code  Gb  exit.o [3]
+fw_rev_handles          0x200025ec    0x8  Data  Lc  ble_dis.o [1]
+gpiote_event_handler    0x0001eeb7   0x4a  Code  Lc  app_button.o [1]
+heart_rate_measurement_char_add
+                        0x0001e60f   0xac  Code  Lc  ble_hrs.o [1]
+hrm_encode              0x0001e577   0x98  Code  Lc  ble_hrs.o [1]
+hw_rev_handles          0x200025e4    0x8  Data  Lc  ble_dis.o [1]
+intern_softdevice_events_execute
+                        0x0001ec55   0xbe  Code  Gb  softdevice_handler.o [1]
+is_conn_params_ok       0x0001eaad   0x18  Code  Lc  ble_conn_params.o [1]
+leds_timer_handler      0x0001df7d   0x14  Code  Lc  bsp.o [1]
+list_deletions_handler  0x0001d2bb   0x96  Code  Lc  app_timer.o [1]
+list_insertions_handler
+                        0x0001d36d   0xf6  Code  Lc  app_timer.o [1]
+m_adv_params            0x20002728   0x18  Data  Lc  main.o [1]
+m_alert_timer_id        0x200026bc    0x4  Data  Lc  bsp.o [1]
+m_ant_evt_buffer        0x20002678   0x24  Data  Lc  softdevice_handler.o [1]
+m_ant_evt_handler       0x20002670    0x4  Data  Lc  softdevice_handler.o [1]
+m_ant_network_key       0x20002268    0x8  Data  Lc  main.o [1]
+m_app_ticks_per_100ms   0x200026b0    0x4  Data  Lc  bsp.o [1]
+m_ble_evt_buffer_size   0x20002662    0x2  Data  Lc  softdevice_handler.o [1]
+m_ble_evt_handler       0x2000266c    0x4  Data  Lc  softdevice_handler.o [1]
+m_button_count          0x20002710    0x1  Data  Lc  app_button.o [1]
+m_button_timer_id       0x200026c4    0x4  Data  Lc  bsp.o [1]
+m_buttons_list          0x0001e0a0   0x10  Data  Lc  bsp.o [1]
+m_cb                    0x20002614   0x4c  Data  Lc  nrf_drv_gpiote.o [1]
+m_change_param          0x20002709    0x1  Data  Lc  ble_conn_params.o [1]
+m_conn_handle           0x2000270a    0x2  Data  Lc  ble_conn_params.o [1]
+m_conn_handle           0x20002210    0x2  Data  Lc  main.o [1]
+m_conn_params_config    0x200026ec   0x1c  Data  Lc  ble_conn_params.o [1]
+m_conn_params_timer_id  0x2000270c    0x4  Data  Lc  ble_conn_params.o [1]
+m_current_conn_params   0x20002748    0x8  Data  Lc  ble_conn_params.o [1]
+m_current_state         0x20002202    0x1  Data  Lc  app_uart.o [1]
+m_detection_delay       0x20002718    0x4  Data  Lc  app_button.o [1]
+m_detection_delay_timer_id
+                        0x2000271c    0x4  Data  Lc  app_button.o [1]
+m_event_handler         0x20002208    0x4  Data  Lc  app_uart.o [1]
+m_events_list           0x2000269c    0xc  Data  Lc  bsp.o [1]
+m_evt_schedule_func     0x200026e8    0x4  Data  Lc  app_timer.o [1]
+m_evt_schedule_func     0x20002664    0x4  Data  Lc  softdevice_handler.o [1]
+m_hrs                   0x20002214   0x50  Data  Lc  main.o [1]
+m_indication_type       0x200026b4    0x4  Data  Lc  bsp.o [1]
+m_instance_counter      0x20002201    0x1  Data  Lc  app_uart.o [1]
+m_leds_timer_id         0x200026b8    0x4  Data  Lc  bsp.o [1]
+m_node_array_size       0x200026c8    0x1  Data  Lc  app_timer.o [1]
+m_pin_state             0x20002720    0x4  Data  Lc  app_button.o [1]
+m_pin_transition        0x20002724    0x4  Data  Lc  app_button.o [1]
+m_preferred_conn_params
+                        0x20002740    0x8  Data  Lc  ble_conn_params.o [1]
+m_registered_callback   0x200026c0    0x4  Data  Lc  bsp.o [1]
+m_rtc1_reset            0x200026cd    0x1  Data  Lc  app_timer.o [1]
+m_rtc1_running          0x200026cc    0x1  Data  Lc  app_timer.o [1]
+m_rx_byte               0x20002204    0x2  Data  Lc  app_uart.o [1]
+m_softdevice_enabled    0x20002660    0x1  Data  Lc  softdevice_handler.o [1]
+m_stable_state          0x200026a8    0x1  Data  Lc  bsp.o [1]
+m_sys_evt_handler       0x20002674    0x4  Data  Lc  softdevice_handler.o [1]
+m_ticks_elapsed         0x200026e0    0x8  Data  Lc  app_timer.o [1]
+m_ticks_elapsed_q_read_ind
+                        0x200026ca    0x1  Data  Lc  app_timer.o [1]
+m_ticks_elapsed_q_write_ind
+                        0x200026cb    0x1  Data  Lc  app_timer.o [1]
+m_ticks_latest          0x200026dc    0x4  Data  Lc  app_timer.o [1]
+m_timer_id_head         0x200026d8    0x4  Data  Lc  app_timer.o [1]
+m_tx_byte               0x20002200    0x1  Data  Lc  app_uart.o [1]
+m_update_count          0x20002708    0x1  Data  Lc  ble_conn_params.o [1]
+m_user_array_size       0x200026c9    0x1  Data  Lc  app_timer.o [1]
+main                    0x0001db19  0x1ac  Code  Gb  main.o [1]
+manuf_specific_data_encode
+                        0x0001e265   0x60  Code  Lc  ble_advdata.o [1]
+manufact_name_handles   0x200025cc    0x8  Data  Lc  ble_dis.o [1]
+model_num_handles       0x200025d4    0x8  Data  Lc  ble_dis.o [1]
+mp_ble_evt_buffer       0x20002668    0x4  Data  Lc  softdevice_handler.o [1]
+mp_buttons              0x20002714    0x4  Data  Lc  app_button.o [1]
+mp_nodes                0x200026d0    0x4  Data  Lc  app_timer.o [1]
+mp_users                0x200026d4    0x4  Data  Lc  app_timer.o [1]
+nrf_delay_us            0x0001d11d   0x1e  Code  Lc  app_timer.o [1]
+nrf_drv_common_irq_enable
+                        0x0001f3c1   0x54  Code  Gb  nrf_drv_common.o [1]
+nrf_drv_gpiote_in_event_enable
+                        0x0001f205   0x84  Code  Gb  nrf_drv_gpiote.o [1]
+nrf_drv_gpiote_in_init  0x0001f175   0x8c  Code  Gb  nrf_drv_gpiote.o [1]
+nrf_drv_gpiote_in_is_set
+                        0x0001f291    0xc  Code  Gb  nrf_drv_gpiote.o [1]
+nrf_drv_gpiote_init     0x0001f113   0x46  Code  Gb  nrf_drv_gpiote.o [1]
+nrf_drv_gpiote_is_init  0x0001f159    0xc  Code  Gb  nrf_drv_gpiote.o [1]
+nrf_gpio_cfg_sense_set  0x0001f049   0x18  Code  Lc  nrf_drv_gpiote.o [1]
+nrf_gpiote_event_clear  0x0001f041    0x8  Code  Lc  nrf_drv_gpiote.o [1]
+nrf_gpiote_event_is_set
+                        0x0001f035    0xc  Code  Lc  nrf_drv_gpiote.o [1]
+on_ant_evt              0x0001d9d5   0x84  Code  Lc  main.o [1]
+on_ble_evt              0x0001da59   0x92  Code  Lc  main.o [1]
+on_conn_params_evt      0x0001d9a9   0x20  Code  Lc  main.o [1]
+on_uart_event           0x0001f445   0x74  Code  Lc  app_uart.o [1]
+pin_in_use_by_gpiote    0x0001f085    0xe  Code  Lc  nrf_drv_gpiote.o [1]
+pin_in_use_by_port      0x0001f071   0x14  Code  Lc  nrf_drv_gpiote.o [1]
+pin_in_use_by_te        0x0001f061   0x10  Code  Lc  nrf_drv_gpiote.o [1]
+pin_in_use_clear        0x0001f093    0xe  Code  Lc  nrf_drv_gpiote.o [1]
+pnp_id_handles          0x2000260c    0x8  Data  Lc  ble_dis.o [1]
+reg_cert_data_list_handles
+                        0x20002604    0x8  Data  Lc  ble_dis.o [1]
+rtc1_stop               0x0001d13b   0x32  Code  Lc  app_timer.o [1]
+serial_num_handles      0x200025dc    0x8  Data  Lc  ble_dis.o [1]
+service_data_encode     0x0001e2c5   0x76  Code  Lc  ble_advdata.o [1]
+service_handle          0x200025c8    0x2  Data  Lc  ble_dis.o [1]
+services_init           0x0001d925   0x70  Code  Lc  main.o [1]
+softdevice_ant_evt_handler_set
+                        0x0001ed4b   0x10  Code  Gb  softdevice_handler.o [1]
+softdevice_assertion_handler
+                        0x0001ec49    0xc  Code  Gb  softdevice_handler.o [1]
+softdevice_ble_evt_handler_set
+                        0x0001ed3b   0x10  Code  Gb  softdevice_handler.o [1]
+softdevice_handler_init
+                        0x0001ed13   0x28  Code  Gb  softdevice_handler.o [1]
+strlen                  0x0001f023   0x10  Code  Gb  strlen.o [4]
+sw_rev_handles          0x200025f4    0x8  Data  Lc  ble_dis.o [1]
+sys_id_handles          0x200025fc    0x8  Data  Lc  ble_dis.o [1]
+ticks_diff_get          0x0001d16d    0x8  Code  Lc  app_timer.o [1]
+timer_list_handler      0x0001d475  0x146  Code  Lc  app_timer.o [1]
+timer_list_insert       0x0001d175   0x5e  Code  Lc  app_timer.o [1]
+timer_list_remove       0x0001d1d3   0x60  Code  Lc  app_timer.o [1]
+timer_start_op_schedule
+                        0x0001d5e3   0x4e  Code  Lc  app_timer.o [1]
+timer_timeouts_check    0x0001d233   0x88  Code  Lc  app_timer.o [1]
+uint16_decode           0x0001d869    0xa  Code  Lc  main.o [1]
+uint16_encode           0x0001e105    0xa  Code  Lc  ble_advdata.o [1]
+uint16_encode           0x0001e841    0xa  Code  Lc  ble_dis.o [1]
+uint16_encode           0x0001e525    0xa  Code  Lc  ble_hrs.o [1]
+update_timeout_handler  0x0001eac5   0x54  Code  Lc  ble_conn_params.o [1]
+user_id_get             0x0001d741   0x48  Code  Lc  app_timer.o [1]
+user_op_alloc           0x0001d5bf   0x24  Code  Lc  app_timer.o [1]
+user_op_enque           0x0001d5bb    0x4  Code  Lc  app_timer.o [1]
+uuid_list_encode        0x0001e1ab   0x26  Code  Lc  ble_advdata.o [1]
+uuid_list_sized_encode  0x0001e10f   0x9c  Code  Lc  ble_advdata.o [1]
+
+
+[1] = C:\Users\Vipin\Downloads\nRF51_SDK_9.0.0_2e23562\examples\multiprotocol\ble_ant_app_hrm\pca10028\s310\iar\_build
+[2] = command line
+[3] = dl6M_tlf.a
+[4] = rt6M_tl.a
+
+  9 912 bytes of readonly  code memory
+     56 bytes of readonly  data memory
+  3 406 bytes of readwrite data memory
+
+Errors: none
+Warnings: none
