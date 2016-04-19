@@ -17,15 +17,35 @@
 #include <stdint.h>
 #include <string.h>
 
+
 #include "ble.h"
+#include "ble_stack_handler_types.h"
+#include "nrf.h"
+#include "nordic_common.h"
+#include "softdevice_handler.h"
+
+
+static void ble_event_handler(ble_evt_t* evt);
 
 
 int main(void)
 {
-	while (1)
-	{
-		
-	}
-	
-	return -1;
+   // Enable the SoftDevice and set the BLE Handler. 
+   SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_SYNTH_250_PPM, NULL);
+   softdevice_ble_evt_handler_set(ble_event_handler);
+
+   while (1)
+   {
+      // Enter power saving mode and wait for more events.
+      sd_app_evt_wait();
+   }
+
+   return -1;
 }
+
+
+static void ble_event_handler(ble_evt_t* evt)
+{
+   
+}
+
