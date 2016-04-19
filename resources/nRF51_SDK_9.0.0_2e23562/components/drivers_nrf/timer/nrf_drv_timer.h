@@ -70,7 +70,8 @@ typedef struct
         .mode               = (nrf_timer_mode_t)TIMER_CONFIG_MODE(id),                \
         .bit_width          = (nrf_timer_bit_width_t)TIMER_CONFIG_BIT_WIDTH(id),      \
         .interrupt_priority = TIMER_CONFIG_IRQ_PRIORITY(id),                          \
-        .p_context          = NULL                                                    \
+
+        .p_context          = NULL                      \
     }
 
 /**

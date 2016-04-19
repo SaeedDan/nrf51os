@@ -80,7 +80,7 @@ L_SCRIPT = ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/toolc
 
 
 # Flags
-CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall -DNRF51 -DBLE_STACK_SUPPORT_REQD
+CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall -DNRF51 -DBLE_STACK_SUPPORT_REQD -DSOFTDEVICE_PRESENT
 LDFLAGS  = -mcpu=cortex-m0 -mthumb -mabi=aapcs -L$(L_COMMON) -T$(L_SCRIPT) -Xlinker -Map=$(PRJ)/$(PRJ).map
 
 
