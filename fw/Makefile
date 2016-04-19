@@ -34,7 +34,7 @@ else
 	RM 			= rm -rf
 	MV 			= mv
 	NRFJPROG    = ../resources/NrfJProg_7_7_0_Linux/nrfjprog
-	ARM_GCC_LOC     = ../resources/gcc-arm-none-eabi-4_9-2015q3-20150921-linux/gcc-arm-none-eabi-4_9-2015q3
+	ARM_GCC_LOC     = ../resources/gcc-arm-none-eabi-4_9-2015q3-20150921-mac/gcc-arm-none-eabi-4_9-2015q3
 endif
 
 
@@ -80,7 +80,7 @@ L_SCRIPT = ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/toolc
 
 
 # Flags
-CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall -DNRF51
+CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall -DNRF51 -DBLE_STACK_SUPPORT_REQD
 LDFLAGS  = -mcpu=cortex-m0 -mthumb -mabi=aapcs -L$(L_COMMON) -T$(L_SCRIPT) -Xlinker -Map=$(PRJ)/$(PRJ).map
 
 
