@@ -54,10 +54,10 @@ int main(void)
 
 static uint32_t rtc_init(void)
 {
-   uitn32_t error_code;
+   uint32_t error_code;
 
    // Init RTC instance.
-   error_code = nrf_drv_rtc_init(&rtc, NULL, rtc_handler);
+   error_code = nrf_drv_rtc_init(&rtc, NULL, rtc_evt_handler);
 
    // Enable tick event and interrupt.
    nrf_drv_rtc_tick_enable(&rtc, true);
@@ -68,7 +68,7 @@ static uint32_t rtc_init(void)
    return error_code;
 }
 
-static void rtc_handler(nrf_drv_rtc_int_type_t int_type)
+static void rtc_evt_handler(nrf_drv_rtc_int_type_t int_type)
 {
    // Check if Tick Interrupt.
    if (int_type == NRF_DRV_RTC_INT_TICK)
