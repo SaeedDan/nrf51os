@@ -23,9 +23,15 @@
 #include "nrf.h"
 #include "nordic_common.h"
 #include "softdevice_handler.h"
+#include "nrf_drv_rtc.h"
 
 
+const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(1);
+
+
+static uint32_t  rtc_init(void);
 static void ble_event_handler(ble_evt_t* evt);
+static void rtc_evt_handler(nrf_drv_rtc_int_type_t int_type);
 
 
 int main(void)
@@ -34,6 +40,9 @@ int main(void)
    SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_SYNTH_250_PPM, NULL);
    softdevice_ble_evt_handler_set(ble_event_handler);
 
+   // Enable the RTC Timer.
+   rtc_init();
+   
    while (1)
    {
       // Enter power saving mode and wait for more events.
@@ -43,6 +52,30 @@ int main(void)
    return -1;
 }
 
+static uint32_t rtc_init(void)
+{
+   uitn32_t error_code;
+
+   // Init RTC instance.
+   error_code = nrf_drv_rtc_init(&rtc, NULL, rtc_handler);
+
+   // Enable tick event and interrupt.
+   nrf_drv_rtc_tick_enable(&rtc, true);
+
+   // Power on the RTC peripheral.
+   nrf_drv_rtc_enable(&rtc);
+
+   return error_code;
+}
+
+static void rtc_handler(nrf_drv_rtc_int_type_t int_type)
+{
+   // Check if Tick Interrupt.
+   if (int_type == NRF_DRV_RTC_INT_TICK)
+   {
+    
+   }
+}
 
 static void ble_event_handler(ble_evt_t* evt)
 {

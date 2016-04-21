@@ -77,6 +77,7 @@ typedef struct
     bool     reliable;           /**< Reliable mode flag. */
 } nrf_drv_rtc_config_t;
 
+
 /**@brief RTC instance default configuration. */
 #define NRF_DRV_RTC_DEFAULT_CONFIG(id)                                                             \
         {                                                                                          \
