@@ -66,6 +66,7 @@ SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/l
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/common/softdevice_handler/*.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/scheduler/app_scheduler.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/rtc/*.c))
+SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/common/*.c))
 SRCS_AS += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/*.s))
 OBJS     = $(SRCS:.c=.o)
 OBJS_AS  = $(SRCS_AS:.s=.o)
@@ -80,6 +81,7 @@ SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/common/sof
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/scheduler/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/device/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/rtc/
+SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/common/
 SRC_PTH_AS += ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
 L_COMMON += ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
 L_SCRIPT = ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/toolchain/armgcc/armgcc_s310_nrf51422_xxac.ld
