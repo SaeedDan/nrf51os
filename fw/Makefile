@@ -31,9 +31,9 @@ ifeq ($(OS),Windows_NT)
 	NRFJPROG	= nrfjprog
 	ARM_GCC_LOC     = ../resources/gcc-arm-none-eabi-4_9-2015q3-20150921-win32/gcc-arm-none-eabi-4_9-2015q3
 else
-	RM 			= rm -rf
-	MV 			= mv
-	NRFJPROG    = ../resources/NrfJProg_7_7_0_Linux/nrfjprog
+	RM 	  	= rm -rf
+	MV 	  	= mv
+	NRFJPROG    	= ../resources/nRF5x-CommandLineTools/nRF5x-Command-Line-Tools_8_4_0_OSX/nrfjprog
 	ARM_GCC_LOC     = ../resources/gcc-arm-none-eabi-4_9-2015q3-20150921-mac/gcc-arm-none-eabi-4_9-2015q3
 endif
 
