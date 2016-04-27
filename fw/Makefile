@@ -31,10 +31,23 @@ ifeq ($(OS),Windows_NT)
 	NRFJPROG	= nrfjprog
 	ARM_GCC_LOC     = ../resources/gcc-arm-none-eabi-4_9-2015q3-20150921-win32/gcc-arm-none-eabi-4_9-2015q3
 else
+	UNAME_S		= $(shell uname -s)
+	UNAME_V		= $(shell uname -v)
 	RM 	  	= rm -rf
 	MV 	  	= mv
-	NRFJPROG    	= ../resources/nRF5x-CommandLineTools/nRF5x-Command-Line-Tools_8_4_0_OSX/nrfjprog
-	ARM_GCC_LOC     = ../resources/gcc-arm-none-eabi-4_9-2015q3-20150921-mac/gcc-arm-none-eabi-4_9-2015q3
+
+	ifeq ($(UNAME_S), Darwin) 
+		NRFJPROG    	= ../resources/nRF5x-CommandLineTools/nRF5x-Command-Line-Tools_8_4_0_OSX/nrfjprog/nrfjprog
+		ARM_GCC_LOC     = ../resources/gcc-arm-none-eabi-4_9-2015q3-20150921-mac/gcc-arm-none-eabi-4_9-2015q3
+	else
+		ifeq ($(UNAME_P), x86_64)
+			NRFJPROG    	= ../resources/nRF5x-CommandLineTools/nRF5x-Command-Line-Tools_8_4_0-Linux-x86_64/nrfjprog/nrfjprog
+			ARM_GCC_LOC     = ../resources/gcc-arm-none-eabi-4_9-2015q3-20150921-linux/gcc-arm-none-eabi-4_9-2015q3
+		else
+			NRFJPROG    	= ../resources/nRF5x-CommandLineTools/nRF5x-Command-Line-Tools_8_4_0-Linux_i386/nrfjprog/nrfjprog
+			ARM_GCC_LOC     = ../resources/gcc-arm-none-eabi-4_9-2015q3-20150921-linux/gcc-arm-none-eabi-4_9-2015q3
+		endif
+	endif
 endif
 
 
@@ -127,4 +140,7 @@ printsize:
 	$(ARM_SIZE)	--format=SysV ./$(PRJ)/$(PRJ).elf
 
 flashit:
+	@echo Flashing $(PRJ)/$(PRJ).hex
+	$(NRFJPROG) --program $(PRJ)/$(PRJ).hex -f nrf51 --sectorerase --verify
 	$(NRFJPROG) --reset
+	$(NRFJPROG) --run
