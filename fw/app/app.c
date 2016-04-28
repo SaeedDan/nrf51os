@@ -15,14 +15,15 @@
 ****************************************************************************************/
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "configuration.h"
 
 #include "os.h"
 
 
-void os_handler(enum OS_EVENT event, uint8_t* data)
+bool os_handler(enum OS_EVENT event, uint8_t* data)
 {
-   
+   return true;
 }
 

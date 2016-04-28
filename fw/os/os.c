@@ -13,9 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ****************************************************************************************/
-
 #include <stdint.h>
-#include <string.h>
+#include <stdbool.h>
 
 #include "configuration.h"
 
@@ -24,13 +23,14 @@
 #include "nrf.h"
 #if defined(RTC_INCLUDE)
    #include "nrf_drv_rtc.h"
-#endif
+#endif   // RTC_INCLUDE
+#include "nrf_soc.h"
 #include "nordic_common.h"
 #include "os.h"
 #include "softdevice_handler.h"
 
 
-enum OS_EVENT event;
+static volatile enum OS_EVENT event;
 #if defined(RTC_INCLUDE)
    const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(1);
 #endif
@@ -39,12 +39,15 @@ enum OS_EVENT event;
 #if defined(RTC_INCLUDE)
    static uint32_t  rtc_init(void);
    static void rtc_evt_handler(nrf_drv_rtc_int_type_t int_type);
-#endif
+#endif   // RTC_INCLUDE
 static void ble_event_handler(ble_evt_t* evt);
 
 
 int main(void)
 {
+   enum OS_EVENT running_event;
+   uint8_t critical_region;
+
    // Enable the SoftDevice and set the BLE Handler. 
    SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_SYNTH_250_PPM, NULL);
    softdevice_ble_evt_handler_set(ble_event_handler);
@@ -52,14 +55,21 @@ int main(void)
 #if defined(RTC_INCLUDE)
    // Enable the RTC Timer.
    rtc_init();
-#endif
+#endif   // RTC_INCLUDE
    
    while (1)
    {
-      os_handler(event, NULL);   // TODO: Define in app module.
+      // Event Dispatcher.
+      sd_nvic_critical_region_enter(&critical_region);
+      running_event = event;
+      sd_nvic_critical_region_exit(critical_region);
 
-      // Enter power saving mode and wait for more events.
-      sd_app_evt_wait();
+      // Check if all events have been handled.
+      if (os_handler(running_event, NULL))
+      {
+         // Enter power saving mode and wait for more events.
+         sd_app_evt_wait();
+      }
    }
 
    return -1;
@@ -87,10 +97,10 @@ static void rtc_evt_handler(nrf_drv_rtc_int_type_t int_type)
    // Check if Tick Interrupt.
    if (int_type == NRF_DRV_RTC_INT_TICK)
    {
-
+      
    }
 }
-#endif
+#endif   // RTC_INCLUDE
 
 static void ble_event_handler(ble_evt_t* evt)
 {

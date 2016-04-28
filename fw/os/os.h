@@ -18,21 +18,17 @@
 #define _OS_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 
 
 enum OS_EVENT
 {
-   OS_EVENT_BLE,
+   OS_EVENT_BLE = 1,
    OS_EVENT_RTC
 };
 
 
-void os_handler(enum OS_EVENT event, uint8_t* data);
+bool os_handler(enum OS_EVENT event, uint8_t* data);
 
 
-
-
-
-
-
-#endif
+#endif   // _OS_H_

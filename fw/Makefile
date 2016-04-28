@@ -111,9 +111,10 @@ vpath %.s $(SRC_PTH_AS)
 
 
 # Execution
-all: makedir $(OBJS) $(OBJS_AS) moveobjects linkobjects elftohex printsize flash
+all: clean makedir $(OBJS) $(OBJS_AS) moveobjects linkobjects elftohex printsize flash
 
 clean:
+	$(RM) ./*.o
 	$(RM) $(PRJ)
 
 makedir:
