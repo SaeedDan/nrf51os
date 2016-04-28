@@ -111,7 +111,7 @@ vpath %.s $(SRC_PTH_AS)
 
 
 # Execution
-all: makedir $(OBJS) $(OBJS_AS) moveobjects linkobjects elftohex printsize flashit
+all: makedir $(OBJS) $(OBJS_AS) moveobjects linkobjects elftohex printsize flash
 
 clean:
 	$(RM) $(PRJ)
@@ -139,7 +139,9 @@ elftohex:
 printsize:
 	$(ARM_SIZE)	--format=SysV ./$(PRJ)/$(PRJ).elf
 
-flashit:
+flash:
+	@echo Flashing s310_softdevice.hex
+	$(NRFJPROG) --program ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/hex/s310_softdevice.hex --sectorerase
 	@echo Flashing $(PRJ)/$(PRJ).hex
 	$(NRFJPROG) --program $(PRJ)/$(PRJ).hex -f nrf51 --sectorerase --verify
 	$(NRFJPROG) --reset
