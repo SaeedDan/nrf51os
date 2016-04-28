@@ -138,7 +138,6 @@ elftohex:
 
 printsize:
 	$(ARM_SIZE)	--format=SysV ./$(PRJ)/$(PRJ).elf
-
 flash:
 	@echo Flashing s310_softdevice.hex
 	$(NRFJPROG) --program ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/hex/s310_softdevice.hex --sectorerase
