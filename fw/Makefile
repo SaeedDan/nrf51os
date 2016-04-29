@@ -97,7 +97,7 @@ SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/rtc/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/common/
 SRC_PTH_AS += ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
 L_COMMON += ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
-L_SCRIPT = ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/toolchain/armgcc/armgcc_s310_nrf51422_xxac.ld
+L_SCRIPT = ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/toolchain/armgcc/armgcc_s310_nrf51422_xxaa.ld
 
 
 # Flags
@@ -139,6 +139,7 @@ elftohex:
 
 printsize:
 	$(ARM_SIZE)	--format=SysV ./$(PRJ)/$(PRJ).elf
+
 flash:
 	@echo Flashing s310_softdevice.hex
 	$(NRFJPROG) --program ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/hex/s310_softdevice.hex --sectorerase
