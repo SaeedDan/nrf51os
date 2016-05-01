@@ -114,8 +114,9 @@ L_SCRIPT = ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/toolc
 
 
 # Flags
-CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall -DNRF51 -DBLE_STACK_SUPPORT_REQD -DSOFTDEVICE_PRESENT
-LDFLAGS  = -mcpu=cortex-m0 -mthumb -mabi=aapcs -L$(L_COMMON) -T$(L_SCRIPT) -Xlinker -Map=$(PRJ)/$(PRJ).map
+CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall -DNRF51 -DBLE_STACK_SUPPORT_REQD -DSOFTDEVICE_PRESENT -DS310 -mfloat-abi=soft  -ffunction-sections -fdata-sections -fno-strict-aliasing  -fno-builtin --short-enums
+AFLAGS   = -x assembler-with-cpp -DSOFTDEVICE_PRESENT -DNRF51 -DBLE_STACK_SUPPORT_REQUIRED
+LDFLAGS  = -mcpu=cortex-m0 -mthumb -mabi=aapcs -L$(L_COMMON) -T$(L_SCRIPT) -Xlinker -Map=$(PRJ)/$(PRJ).map -Wl,--gc-sections
 
 
 # Source Lookup Paths
@@ -138,7 +139,7 @@ makedir:
 	@echo $(SRCS)
 
 %.o:%.s
-	$(ARM_AS) -c -o  $@ $<
+	$(ARM_CC) $(AFLAGS) -c -o  $@ $<
 	@echo $(SRCS_AS)
 
 moveobjects:
