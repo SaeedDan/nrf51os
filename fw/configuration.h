@@ -17,9 +17,19 @@
 #define _CONFIGURATION_H_
 
 // APPLICATION CONFIGURATION OPTIONS
-#define RTC_INCLUDE
+#define BLE_INCLUDE
+#define RTC_INCLUDE        
 #define SPI_INCLUDE
 // END APPLICATION CONFIGURATION OPTIONS
 
+#if defined(BLE_INCLUDE)
+   #define MIN_CONN_INTERVAL                MSEC_TO_UNITS(400, UNIT_1_25_MS)           /**< Minimum acceptable connection interval (0.4 seconds). */
+   #define MAX_CONN_INTERVAL                MSEC_TO_UNITS(650, UNIT_1_25_MS)           /**< Maximum acceptable connection interval (0.65 second). */
+   #define SLAVE_LATENCY                    0                                          /**< Slave latency. */
+   #define CONN_SUP_TIMEOUT                 MSEC_TO_UNITS(4000, UNIT_10_MS)            /**< Connection supervisory timeout (4 seconds). */ 
+   #define DEVICE_NAME                      "FocusLite"
+   #define APP_ADV_INTERVAL                 300                                        /**< The advertising interval (in units of 0.625 ms. This value corresponds to 25 ms). */
+   #define APP_ADV_TIMEOUT_IN_SECONDS       180                                        /**< The advertising timeout in units of seconds. */
+#endif
 
 #endif

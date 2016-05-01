@@ -20,15 +20,20 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "configuration.h"
 
 enum OS_EVENT
 {
-   OS_EVENT_BLE = 1,
+   OS_EVENT_BLE,
    OS_EVENT_RTC
 };
 
 
 bool os_handler(enum OS_EVENT event, uint8_t* data);
+#if defined(BLE_INCLUDE)
+   bool os_ble_advertising_start(void);
+   bool os_ble_advertising_stop(void);
+#endif   // BLE_INCLUDE
 
 
 #endif   // _OS_H_

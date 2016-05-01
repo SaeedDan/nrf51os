@@ -18,8 +18,14 @@
 
 #include "configuration.h"
 
-#include "ble.h"
-#include "ble_stack_handler_types.h"
+#if defined (BLE_INCLUDE)
+   #include "ble.h"
+   #include "ble_advertising.h"
+   #include "ble_advdata.h"
+   #include "ble_gap.h"
+   #include "ble_types.h"
+   #include "ble_stack_handler_types.h"
+#endif   // BLE_INCLUDE
 #include "nrf.h"
 #if defined(RTC_INCLUDE)
    #include "nrf_drv_rtc.h"
@@ -30,42 +36,70 @@
 #include "softdevice_handler.h"
 
 
-static volatile enum OS_EVENT event;
+#define EVENT_BLE       0x01
+#define EVENT_RTC_TICK  0x02
+
+
+static volatile uint8_t  event;
+static uint8_t* running_event_data;
 #if defined(RTC_INCLUDE)
    const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(1);
 #endif
 
 
+#if defined(BLE_INCLUDE)
+   static void os_ble_event_handler(ble_evt_t* evt);
+   static bool os_ble_gap_init(void);
+   static bool os_ble_advertising_init(void);
+#endif   // BLE_INCLUDE
 #if defined(RTC_INCLUDE)
-   static uint32_t  rtc_init(void);
-   static void rtc_evt_handler(nrf_drv_rtc_int_type_t int_type);
+   static uint32_t  os_rtc_init(void);
+   static void os_rtc_evt_handler(nrf_drv_rtc_int_type_t int_type);
 #endif   // RTC_INCLUDE
-static void ble_event_handler(ble_evt_t* evt);
+
 
 
 int main(void)
 {
    enum OS_EVENT running_event;
    uint8_t critical_region;
-
+   event = 0;
+   
    // Enable the SoftDevice and set the BLE Handler. 
    SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_SYNTH_250_PPM, NULL);
-   softdevice_ble_evt_handler_set(ble_event_handler);
-
-#if defined(RTC_INCLUDE)
-   // Enable the RTC Timer.
-   rtc_init();
-#endif   // RTC_INCLUDE
+   #if defined(BLE_INCLUDE)
+      softdevice_ble_evt_handler_set(os_ble_event_handler);
+      os_ble_gap_init();
+      os_ble_advertising_init();
+      os_ble_advertising_start();
+   #endif   // BLE_INCLUDE
+   #if defined(RTC_INCLUDE)
+      // Enable the RTC Timer.
+      //   os_rtc_init();
+   #endif   // RTC_INCLUDE
    
    while (1)
    {
       // Event Dispatcher.
       sd_nvic_critical_region_enter(&critical_region);
-      running_event = event;
+      if (event & EVENT_BLE)
+      {
+         running_event = OS_EVENT_BLE;
+         event &= ~EVENT_BLE;
+      }
+      else if (event & EVENT_RTC_TICK)
+      {
+         running_event = OS_EVENT_RTC;
+         event &= ~EVENT_RTC_TICK;
+         running_event_data = NULL;
+      }
       sd_nvic_critical_region_exit(critical_region);
 
+      // Dispatch Event to Application.
+      os_handler(running_event, running_event_data);
+      
       // Check if all events have been handled.
-      if (os_handler(running_event, NULL))
+      if (!event)   
       {
          // Enter power saving mode and wait for more events.
          sd_app_evt_wait();
@@ -76,12 +110,12 @@ int main(void)
 }
 
 #if defined(RTC_INCLUDE)
-static uint32_t rtc_init(void)
+static uint32_t os_rtc_init(void)
 {
    uint32_t error_code;
 
    // Init RTC instance.
-   error_code = nrf_drv_rtc_init(&rtc, NULL, rtc_evt_handler);
+   error_code = nrf_drv_rtc_init(&rtc, NULL, os_rtc_evt_handler);
 
    // Enable tick event and interrupt.
    nrf_drv_rtc_tick_enable(&rtc, true);
@@ -92,18 +126,103 @@ static uint32_t rtc_init(void)
    return error_code;
 } 
 
-static void rtc_evt_handler(nrf_drv_rtc_int_type_t int_type)
+static void os_rtc_evt_handler(nrf_drv_rtc_int_type_t int_type)
 {
    // Check if Tick Interrupt.
    if (int_type == NRF_DRV_RTC_INT_TICK)
    {
-      
+      event |= EVENT_RTC_TICK;
    }
 }
 #endif   // RTC_INCLUDE
 
-static void ble_event_handler(ble_evt_t* evt)
+#if defined(BLE_INCLUDE)
+bool os_ble_advertising_start(void)
 {
-   
+    uint32_t err_code;
+
+    err_code = ble_advertising_start(BLE_ADV_MODE_FAST);
+    
+    if (err_code == NRF_SUCCESS)
+       return true;
+
+    return false;
 }
 
+bool os_ble_advertising_stop(void)
+{
+   uint32_t err_code;
+
+   err_code = sd_ble_gap_adv_stop();
+   
+    if (err_code == NRF_SUCCESS)
+       return true;
+
+    return false;
+}
+
+static bool os_ble_gap_init(void)
+{
+    uint32_t                err_code;
+    ble_gap_conn_params_t   gap_conn_params;
+    ble_gap_conn_sec_mode_t sec_mode;
+
+    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
+
+    err_code = sd_ble_gap_device_name_set(&sec_mode,
+                                          (const uint8_t *)DEVICE_NAME,
+                                          strlen(DEVICE_NAME));
+    APP_ERROR_CHECK(err_code);
+
+    err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_UNKNOWN);
+    APP_ERROR_CHECK(err_code);
+
+    memset(&gap_conn_params, 0, sizeof(gap_conn_params));
+
+    gap_conn_params.min_conn_interval = MIN_CONN_INTERVAL;
+    gap_conn_params.max_conn_interval = MAX_CONN_INTERVAL;
+    gap_conn_params.slave_latency     = SLAVE_LATENCY;
+    gap_conn_params.conn_sup_timeout  = CONN_SUP_TIMEOUT;
+
+    err_code = sd_ble_gap_ppcp_set(&gap_conn_params);
+    APP_ERROR_CHECK(err_code);
+
+    if (err_code == NRF_SUCCESS)
+       return true;
+
+    return false;
+}
+
+static bool os_ble_advertising_init(void)
+{
+    uint32_t      err_code;
+    ble_advdata_t advdata;
+
+    // Build advertising data struct to pass into @ref ble_advertising_init.
+    memset(&advdata, 0, sizeof(advdata));
+
+    advdata.name_type               = BLE_ADVDATA_FULL_NAME;
+    advdata.include_appearance      = true;
+    advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
+    //advdata.uuids_complete.uuid_cnt = sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
+    //advdata.uuids_complete.p_uuids  = m_adv_uuids;
+
+    ble_adv_modes_config_t options = {0};
+    options.ble_adv_fast_enabled  = BLE_ADV_FAST_ENABLED;
+    options.ble_adv_fast_interval = APP_ADV_INTERVAL;
+    options.ble_adv_fast_timeout  = APP_ADV_TIMEOUT_IN_SECONDS;
+    
+    err_code = ble_advertising_init(&advdata, NULL, &options, NULL, NULL);
+    APP_ERROR_CHECK(err_code);
+
+    if (err_code == NRF_SUCCESS)
+       return true;
+
+    return false;
+}
+
+static void os_ble_event_handler(ble_evt_t* evt)
+{
+   event |= EVENT_BLE;  
+}
+#endif   // BLE_INCLUDE

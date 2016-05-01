@@ -176,7 +176,7 @@ Reset_Handler:
     
     LDR     R0, =SystemInit
     BLX     R0
-    LDR     R0, =_start
+    LDR     R0, =main
     BX      R0
 
     .pool
