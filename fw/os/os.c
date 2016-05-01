@@ -63,11 +63,23 @@ int main(void)
 {
    enum OS_EVENT running_event;
    uint8_t critical_region;
+   uint32_t err_code;
    event = 0;
    
    // Enable the SoftDevice and set the BLE Handler. 
    SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_SYNTH_250_PPM, NULL);
    #if defined(BLE_INCLUDE)
+      #if defined(S110) || defined(S130) || defined(S310)
+          // Enable BLE stack.
+          ble_enable_params_t ble_enable_params;
+          memset(&ble_enable_params, 0, sizeof(ble_enable_params));
+       #if defined(S130) || defined(S310)
+          ble_enable_params.gatts_enable_params.attr_tab_size   = BLE_GATTS_ATTR_TAB_SIZE_DEFAULT;
+       #endif
+       ble_enable_params.gatts_enable_params.service_changed = 1;
+       err_code = sd_ble_enable(&ble_enable_params);
+       APP_ERROR_CHECK(err_code);
+    #endif   
       softdevice_ble_evt_handler_set(os_ble_event_handler);
       os_ble_gap_init();
       os_ble_advertising_init();
@@ -75,7 +87,7 @@ int main(void)
    #endif   // BLE_INCLUDE
    #if defined(RTC_INCLUDE)
       // Enable the RTC Timer.
-      //   os_rtc_init();
+      os_rtc_init();
    #endif   // RTC_INCLUDE
    
    while (1)

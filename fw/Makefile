@@ -114,9 +114,9 @@ L_SCRIPT = ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/toolc
 
 
 # Flags
-CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall -DNRF51 -DBLE_STACK_SUPPORT_REQD -DSOFTDEVICE_PRESENT -DS310 -mfloat-abi=soft  -ffunction-sections -fdata-sections -fno-strict-aliasing  -fno-builtin --short-enums
-AFLAGS   = -x assembler-with-cpp -DSOFTDEVICE_PRESENT -DNRF51 -DBLE_STACK_SUPPORT_REQUIRED
-LDFLAGS  = -mcpu=cortex-m0 -mthumb -mabi=aapcs -L$(L_COMMON) -T$(L_SCRIPT) -Xlinker -Map=$(PRJ)/$(PRJ).map -Wl,--gc-sections
+CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall -DNRF51  -DSOFTDEVICE_PRESENT -DBLE_STACK_SUPPORT_REQD -DS310 -mfloat-abi=soft  -ffunction-sections -fdata-sections -fno-strict-aliasing  -fno-builtin --short-enums
+AFLAGS   = -x assembler-with-cpp -DSOFTDEVICE_PRESENT -DNRF51 -DBLE_STACK_SUPPORT_REQD -DS310
+LDFLAGS  = -mcpu=cortex-m0 -mthumb -mabi=aapcs -L$(L_COMMON) -T$(L_SCRIPT) -Xlinker -Map=$(PRJ)/$(PRJ).map -Wl,--gc-sections -lc -lnosys -nostartfiles -nodefaultlibs -nostdlib
 
 
 # Source Lookup Paths
@@ -125,7 +125,7 @@ vpath %.s $(SRC_PTH_AS)
 
 
 # Execution
-all: clean makedir $(OBJS) $(OBJS_AS) moveobjects linkobjects elftohex printsize flash
+all: clean makedir $(OBJS) $(OBJS_AS) moveobjects linkobjects elftohex printsize flash_app
 
 clean:
 	$(RM) ./*.o
@@ -154,10 +154,12 @@ elftohex:
 printsize:
 	$(ARM_SIZE)	--format=SysV ./$(PRJ)/$(PRJ).elf
 
-flash:
-	@echo Flashing s310_softdevice.hex
-	$(NRFJPROG) --program ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/hex/s310_softdevice.hex --sectorerase --verify
+flash_app:
 	@echo Flashing $(PRJ)/$(PRJ).hex
 	$(NRFJPROG) --program $(PRJ)/$(PRJ).hex -f nrf51 --sectorerase --verify
 	$(NRFJPROG) --reset
 	$(NRFJPROG) --run
+
+flash_sd:
+	@echo Flashing s310_softdevice.hex
+	$(NRFJPROG) --program ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/hex/s310_softdevice.hex --sectorerase --verify
