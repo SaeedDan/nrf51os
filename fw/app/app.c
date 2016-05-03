@@ -19,6 +19,7 @@
 
 #include "configuration.h"
 
+#include "hw.c"
 #include "os.h"
 
 
@@ -49,6 +50,10 @@ bool os_handler(enum OS_EVENT event, uint8_t* data)
 {
    switch (event)
    {
+     case OS_EVENT_BOOTUP:
+        hw_init();
+        break;
+        
      #if defined(BLE_INCLUDE)
       case OS_EVENT_BLE:
          break;

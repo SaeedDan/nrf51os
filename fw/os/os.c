@@ -65,6 +65,8 @@ int main(void)
    uint8_t critical_region;
    uint32_t err_code;
    event = 0;
+
+   os_handler(OS_EVENT_BOOTUP);
    
    // Enable the SoftDevice and set the BLE Handler. 
    SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_SYNTH_250_PPM, NULL);
@@ -235,6 +237,6 @@ static bool os_ble_advertising_init(void)
 
 static void os_ble_event_handler(ble_evt_t* evt)
 {
-   event |= EVENT_BLE;  
+   event |= EVENT_BLE;
 }
 #endif   // BLE_INCLUDE

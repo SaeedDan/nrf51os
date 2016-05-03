@@ -24,6 +24,7 @@
 
 enum OS_EVENT
 {
+   OS_EVENT_BOOTUP,
    OS_EVENT_BLE,
    OS_EVENT_RTC
 };
