@@ -28,12 +28,23 @@ enum OS_EVENT
    OS_EVENT_RTC
 };
 
-
 bool os_handler(enum OS_EVENT event, uint8_t* data);
+
 #if defined(BLE_INCLUDE)
+   enum OS_BLE_EVENT
+   {
+      OS_BLE_EVENT_CONNECTED,
+      OS_BLE_EVENT_SERVICE_ENABLED,
+      OS_BLE_EVENT_SERVICE_DATA_AVAILABLE,
+      OS_BLE_EVENT_DISCONNECTED
+   };
+
    bool os_ble_advertising_start(void);
    bool os_ble_advertising_stop(void);
 #endif   // BLE_INCLUDE
 
+#if defined(RTC_INCLUDE)
+   #define IS_RTC_HZ_EVENT(counter, hz)     (counter == (RTC_FRQ / hz))               
+#endif   // RTC_INCLUDE
 
 #endif   // _OS_H_

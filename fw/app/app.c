@@ -22,8 +22,48 @@
 #include "os.h"
 
 
+#define APP_FREQ         10   // App requested frequency. Derived from main Main RTC Clock Freq.
+
+
+uint32_t rtc_counter;
+
+#if defined(RTC_INCLUDE)
+void app_rtc_handler(void)
+{
+   rtc_counter++;
+
+   if (IS_RTC_HZ_EVENT(rtc_counter, APP_FREQ))
+   {
+      rtc_counter = 0;
+   }
+}
+#endif
+
+
+void app_ble_handler(void)
+{
+   
+}
+
 bool os_handler(enum OS_EVENT event, uint8_t* data)
 {
+   switch (event)
+   {
+     #if defined(BLE_INCLUDE)
+      case OS_EVENT_BLE:
+         break;
+      #endif
+
+      #if defined(RTC_INCLUDE)   
+      case OS_EVENT_RTC:
+         app_rtc_handler();
+         break;
+      #endif
+
+      default:
+         break;
+   }
    return true;
 }
+
 

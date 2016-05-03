@@ -30,6 +30,10 @@
    #define DEVICE_NAME                      "FocusLite"
    #define APP_ADV_INTERVAL                 300                                        /**< The advertising interval (in units of 0.625 ms. This value corresponds to 25 ms). */
    #define APP_ADV_TIMEOUT_IN_SECONDS       180                                        /**< The advertising timeout in units of seconds. */
-#endif
+#endif   // BLE_INCLUDE
+
+#if defined(RTC_INCLUDE)
+   #define RTC_FRQ                          32768
+#endif   // RTC_INCLUDE
 
 #endif
