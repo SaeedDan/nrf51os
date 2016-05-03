@@ -51,7 +51,7 @@ bool os_handler(enum OS_EVENT event, uint8_t* data)
    switch (event)
    {
      case OS_EVENT_BOOTUP:
-        hw_init();
+        // hw_init();
         break;
         
      #if defined(BLE_INCLUDE)

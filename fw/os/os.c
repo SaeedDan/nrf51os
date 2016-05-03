@@ -66,7 +66,7 @@ int main(void)
    uint32_t err_code;
    event = 0;
 
-   os_handler(OS_EVENT_BOOTUP);
+   os_handler(OS_EVENT_BOOTUP, NULL);
    
    // Enable the SoftDevice and set the BLE Handler. 
    SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_SYNTH_250_PPM, NULL);
