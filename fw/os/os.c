@@ -23,8 +23,12 @@
    #include "ble_advertising.h"
    #include "ble_advdata.h"
    #include "ble_gap.h"
+   #include "ble_gatts.h"
    #include "ble_types.h"
    #include "ble_stack_handler_types.h"
+   #if defined(BLE_NUS_INCLUDE)
+      #include "ble_nus.h"
+   #endif   // BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE
 #include "nrf.h"
 #if defined(RTC_INCLUDE)
@@ -45,12 +49,21 @@ static uint8_t* running_event_data;
 #if defined(RTC_INCLUDE)
    const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(1);
 #endif
+#if defined(BLE_INCLUDE)
+   static uint32_t ble_connection_handle;
+   #if defined(BLE_NUS_INCLUDE)
+      static ble_nus_t ble_nus;
+   #endif   // BLE_NUS_INCLUDE
+#endif   // BLE_INCLUDE
 
 
 #if defined(BLE_INCLUDE)
    static void os_ble_event_handler(ble_evt_t* evt);
    static bool os_ble_gap_init(void);
    static bool os_ble_advertising_init(void);
+   #if defined(BLE_NUS_INCLUDE)
+      static void os_ble_nus_data_handler(ble_nus_t * p_nus, uint8_t * p_data, uint16_t length);   
+   #endif   // BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE
 #if defined(RTC_INCLUDE)
    static uint32_t  os_rtc_init(void);
@@ -65,7 +78,12 @@ int main(void)
    uint8_t critical_region;
    uint32_t err_code;
    event = 0;
-
+   #if defined(BLE_INCLUDE)
+      ble_connection_handle = BLE_CONN_HANDLE_INVALID;
+      #if defined(BLE_NUS_INCLUDE)
+         ble_nus_init_t ble_nus_initial;
+      #endif   // BLE_NUS_INCLUDE
+   #endif   // BLE_INCLUDE
    os_handler(OS_EVENT_BOOTUP, NULL);
    
    // Enable the SoftDevice and set the BLE Handler. 
@@ -81,11 +99,16 @@ int main(void)
        ble_enable_params.gatts_enable_params.service_changed = 1;
        err_code = sd_ble_enable(&ble_enable_params);
        APP_ERROR_CHECK(err_code);
-    #endif   
+    #endif
       softdevice_ble_evt_handler_set(os_ble_event_handler);
       os_ble_gap_init();
       os_ble_advertising_init();
       os_ble_advertising_start();
+      #if defined(BLE_NUS_INCLUDE)
+         memset(&ble_nus_initial, 0, sizeof(ble_nus_initial));
+         ble_nus_initial.data_handler = os_ble_nus_data_handler;
+         ble_nus_init(&ble_nus, &ble_nus_initial);
+      #endif   // BLE_NUS_INCLUDE
    #endif   // BLE_INCLUDE
    #if defined(RTC_INCLUDE)
       // Enable the RTC Timer.
@@ -220,7 +243,7 @@ static bool os_ble_advertising_init(void)
     advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
     //advdata.uuids_complete.uuid_cnt = sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
     //advdata.uuids_complete.p_uuids  = m_adv_uuids;
-
+    
     ble_adv_modes_config_t options = {0};
     options.ble_adv_fast_enabled  = BLE_ADV_FAST_ENABLED;
     options.ble_adv_fast_interval = APP_ADV_INTERVAL;
@@ -238,5 +261,54 @@ static bool os_ble_advertising_init(void)
 static void os_ble_event_handler(ble_evt_t* evt)
 {
    event |= EVENT_BLE;
+
+   switch (evt->header.evt_id)
+   {
+      case BLE_GAP_EVT_CONNECTED:
+         ble_connection_handle = evt->evt.gap_evt.conn_handle;
+         break;
+      case BLE_GAP_EVT_DISCONNECTED:
+         ble_connection_handle = BLE_CONN_HANDLE_INVALID;
+         break;
+      case BLE_GAP_EVT_SEC_PARAMS_REQUEST:
+         sd_ble_gap_sec_params_reply(ble_connection_handle, BLE_GAP_SEC_STATUS_PAIRING_NOT_SUPP, NULL, NULL);
+         break;
+      case BLE_GAP_EVT_SEC_INFO_REQUEST:
+         break;
+      case BLE_GAP_EVT_SEC_REQUEST:
+         break;
+      case BLE_GAP_EVT_TIMEOUT:
+         break;
+      case BLE_GATTS_EVT_WRITE:
+         break;
+      case BLE_GATTS_EVT_SYS_ATTR_MISSING:
+         sd_ble_gatts_sys_attr_set(ble_connection_handle, NULL, 0, 0);
+         break;
+      case BLE_GATTS_EVT_HVC:
+         break;
+      case BLE_GATTS_EVT_TIMEOUT:
+        break;
+      default:
+         break;
+   }
+
+   #if defined(BLE_NUS_INCLUDE)
+      ble_nus_on_ble_evt(&ble_nus, evt);
+   #endif   // BLE_NUS_INCLUDE
 }
+
+#if defined(BLE_NUS_INCLUDE)
+   bool os_ble_nus_send_data(uint8_t* data, uint16_t length)
+   {
+      if (ble_nus_string_send(&ble_nus, data, length) ==  NRF_SUCCESS)
+         return true;
+
+      return false;
+   }
+ 
+   static void os_ble_nus_data_handler(ble_nus_t * p_nus, uint8_t * p_data, uint16_t length)
+   {
+      // Data received from Peer over BLE. 
+   }
+#endif   /// BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE

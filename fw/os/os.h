@@ -42,10 +42,12 @@ bool os_handler(enum OS_EVENT event, uint8_t* data);
 
    bool os_ble_advertising_start(void);
    bool os_ble_advertising_stop(void);
+   #if defined(BLE_NUS_INCLUDE)
+      bool os_ble_nus_send_data(uint8_t* data, uint16_t length);
+   #endif   // BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE
 
 #if defined(RTC_INCLUDE)
    #define IS_RTC_HZ_EVENT(counter, hz)     (counter == (RTC_FRQ / hz))               
 #endif   // RTC_INCLUDE
-
 #endif   // _OS_H_

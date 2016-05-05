@@ -25,8 +25,10 @@
 
 #define APP_FREQ         10   // App requested frequency. Derived from main Main RTC Clock Freq.
 
+#if defined(RTC_INCLUDE)
+   uint32_t rtc_counter;
+#endif   // RTC_INCLUDE
 
-uint32_t rtc_counter;
 
 #if defined(RTC_INCLUDE)
 void app_rtc_handler(void)
@@ -36,6 +38,11 @@ void app_rtc_handler(void)
    if (IS_RTC_HZ_EVENT(rtc_counter, APP_FREQ))
    {
       rtc_counter = 0;
+
+      #if defined(BLE_NUS_INCLUDE)
+         char demoMessage[] = "Hello Message";
+         os_ble_nus_send_data(demoMessage, sizeof(demoMessage));
+      #endif   // BLE_NUS_INCLUDE
    }
 }
 #endif

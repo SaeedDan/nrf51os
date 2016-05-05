@@ -33,7 +33,6 @@
  * 
  */
 void sdio_init(void);
-
 /**
  * @brief Function for reading a byte over 2-wire serial interface.
  * 
