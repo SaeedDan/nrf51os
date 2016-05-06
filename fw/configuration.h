@@ -45,6 +45,5 @@
 #endif   // RTC_INCLUDE
 
 #if defined(UART_INCLUDE)
-
 #endif   // UART_INCLUDE
 #endif
