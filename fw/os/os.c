@@ -209,7 +209,7 @@ bool os_ble_advertising_stop(void)
 static bool os_ble_gap_init(void)
 {
     uint32_t                err_code;
-    ble0_gap_conn_params_t   gap_conn_params;
+    ble_gap_conn_params_t   gap_conn_params;
     ble_gap_conn_sec_mode_t sec_mode;
 
     BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
@@ -351,6 +351,8 @@ bool os_uart_send_data(uint8_t* data, uint16_t length)
       while (app_uart_put(data[i]) != NRF_SUCCESS);
    }
    while(app_uart_put('\n') != NRF_SUCCESS);
+
+   return true;
 }
 
 static void os_uart_event_handle(app_uart_evt_t * p_event)
