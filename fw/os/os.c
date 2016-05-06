@@ -119,6 +119,9 @@ int main(void)
       // Enable the RTC Timer.
       os_rtc_init();
    #endif   // RTC_INCLUDE
+   #if defined(UART_INCLUDE)
+      os_uart_init();
+   #endif   // UART_INCLUDE
    
    while (1)
    {

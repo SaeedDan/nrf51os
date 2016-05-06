@@ -54,7 +54,7 @@ void app_rtc_handler(void)
 
 void app_ble_handler(void)
 {
-   
+            
 }
 
 bool os_handler(enum OS_EVENT event, uint8_t* data)
@@ -79,7 +79,6 @@ bool os_handler(enum OS_EVENT event, uint8_t* data)
       default:
          break;
    }
+
    return true;
 }
-
-
