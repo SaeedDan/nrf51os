@@ -19,7 +19,7 @@
 // APPLICATION CONFIGURATION OPTIONS
 #define BLE_INCLUDE
 #define RTC_INCLUDE        
-#define SPI_INCLUDE
+#define UART_INCLUDE
 // END APPLICATION CONFIGURATION OPTIONS
 
 #if defined(BLE_INCLUDE)
@@ -44,4 +44,7 @@
    #define RTC_FRQ                          32768
 #endif   // RTC_INCLUDE
 
+#if defined(UART_INCLUDE)
+
+#endif   // UART_INCLUDE
 #endif

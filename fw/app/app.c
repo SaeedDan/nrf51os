@@ -43,6 +43,10 @@ void app_rtc_handler(void)
          char demoMessage[] = "Hello Message";
          os_ble_nus_send_data(demoMessage, sizeof(demoMessage));
       #endif   // BLE_NUS_INCLUDE
+
+      #if defined(UART_INCLUDE)
+         os_uart_send_data(demoMessage, sizeof(demoMessage));
+      #endif   // UART_INCLUDE
    }
 }
 #endif

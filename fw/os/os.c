@@ -38,6 +38,9 @@
 #include "nordic_common.h"
 #include "os.h"
 #include "softdevice_handler.h"
+#if defined(UART_INCLUDE)
+   #include "app_uart.h"
+#endif
 
 
 #define EVENT_BLE       0x01
@@ -69,8 +72,10 @@ static uint8_t* running_event_data;
    static uint32_t  os_rtc_init(void);
    static void os_rtc_evt_handler(nrf_drv_rtc_int_type_t int_type);
 #endif   // RTC_INCLUDE
-
-
+#if defined(UART_INCLUDE)
+   static void os_uart_init(void);
+   static void os_uart_event_handle(app_uart_evt_t * p_event);
+#endif // UART_INCLUDE
 
 int main(void)
 {
@@ -312,3 +317,62 @@ static void os_ble_event_handler(ble_evt_t* evt)
    }
 #endif   /// BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE
+
+
+#if defined(UART_INCLUDE)
+static void os_uart_init(void)
+{
+    uint32_t                     err_code;
+    const app_uart_comm_params_t comm_params =
+    {
+        0,
+        1,
+        2,
+        3,
+        APP_UART_FLOW_CONTROL_DISABLED,
+        false,
+        UART_BAUDRATE_BAUDRATE_Baud1M
+    };
+
+    APP_UART_INIT( &comm_params,
+                    os_uart_event_handle,
+                    APP_IRQ_PRIORITY_LOW,
+                    err_code);
+    APP_ERROR_CHECK(err_code);
+}
+
+bool os_uart_send_data(uint8_t* data, uint16_t length)
+{
+   for (uint16_t i = 0; i < length; i++)
+   {
+      while (app_uart_put(data[i]) != NRF_SUCCESS);
+   }
+   while(app_uart_put('\n') != NRF_SUCCESS);
+}
+
+static void os_uart_event_handle(app_uart_evt_t * p_event)
+{
+    static uint8_t data_array[BLE_NUS_MAX_DATA_LEN];
+    static uint8_t index = 0;
+    uint32_t       err_code;
+
+    switch (p_event->evt_type)
+    {
+        case APP_UART_DATA_READY:
+            UNUSED_VARIABLE(app_uart_get(&data_array[index]));
+            index++;
+            break;
+
+        case APP_UART_COMMUNICATION_ERROR:
+            APP_ERROR_HANDLER(p_event->data.error_communication);
+            break;
+
+        case APP_UART_FIFO_ERROR:
+            APP_ERROR_HANDLER(p_event->data.error_code);
+            break;
+
+        default:
+            break;
+    }
+}
+#endif   // UART_INCLUDE
