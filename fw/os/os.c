@@ -38,6 +38,9 @@
 #include "nordic_common.h"
 #include "os.h"
 #include "softdevice_handler.h"
+#if defined(TWI_INCLUDE)
+   #include "twi_master.h"
+#endif   // TWI_INCLUDE
 #if defined(UART_INCLUDE)
    #include "app_uart.h"
 #endif
@@ -119,6 +122,9 @@ int main(void)
       // Enable the RTC Timer.
       os_rtc_init();
    #endif   // RTC_INCLUDE
+   #if defined(TWI_INCLUDE)
+      twi_master_init();      
+   #endif   // TWI_INCLUDE
    #if defined(UART_INCLUDE)
       os_uart_init();
    #endif   // UART_INCLUDE

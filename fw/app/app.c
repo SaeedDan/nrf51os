@@ -39,12 +39,12 @@ void app_rtc_handler(void)
    if (OS_IS_RTC_HZ_EVENT(rtc_counter, APP_FREQ))
    {  
       #if defined(BLE_NUS_INCLUDE)
-         char demoMessage[] = "Hello Message";
-         os_ble_nus_send_data(&rtc_counter, sizeof(rtc_counter));
+         char pingMessage[] = "PING!";
+         os_ble_nus_send_data(&pingMessage, sizeof(pingMessage));
       #endif   // BLE_NUS_INCLUDE
 
       #if defined(UART_INCLUDE)
-         os_uart_send_data(demoMessage, sizeof(demoMessage));
+         os_uart_send_data(pingMessage, sizeof(pingMessage));
       #endif   // UART_INCLUDE
 
          rtc_counter = 0;

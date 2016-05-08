@@ -57,7 +57,7 @@ INCS    += -I.
 INCS    += -I./app/
 INCS    += -I./bsp/
 INCS    += -I./os/ 
-INCS    += -I./peripherals/ 
+INCS    += -I./external/mpu9250/ 
 INCS 	+= -I../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/util/
@@ -74,6 +74,8 @@ INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/pstorag
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/ble_flash/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/uart/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/gpiote/
+INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/twi_master/incubated/
+INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/twi_master/incubated/config/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/ble/common/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/ble/ble_advertising/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/ble/ble_services/ble_nus/
@@ -82,6 +84,7 @@ SRCS     = $(notdir $(wildcard ./app/*.c))
 SRCS    += $(notdir $(wildcard ./bsp/*.c))
 SRCS    += $(notdir $(wildcard ./os/*.c))
 SRCS    += $(notdir $(wildcard ./peripherals/*.c))
+SRCS    += $(notdir $(wildcard ./external/mpu9250/*.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/system_nrf51422.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/util/*.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/common/softdevice_handler/*.c))
@@ -92,6 +95,7 @@ SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/d
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/ble_flash/*.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/uart/app_uart.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/gpiote/*.c))
+SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/twi_master/incubated/twi_hw_master.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/ble/common/ble_advdata.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/ble/ble_advertising/*.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/ble/ble_services/ble_nus/*.c))
@@ -103,6 +107,7 @@ SRC_PTH += ./app/
 SRC_PTH += ./bsp/
 SRC_PTH += ./os/
 SRC_PTH += ./peripherals/
+SRC_PTH += ./external/mpu9250/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/util/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/common/softdevice_handler/
@@ -114,6 +119,8 @@ SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/pstorage/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/ble_flash/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/uart/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/gpiote/
+SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/twi_master/incubated/
+SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/twi_master/incubated/config/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/ble/common/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/ble/ble_advertising/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/ble/ble_services/ble_nus/
@@ -134,7 +141,7 @@ vpath %.s $(SRC_PTH_AS)
 
 
 # Execution
-all: clean makedir $(OBJS) $(OBJS_AS) moveobjects linkobjects elftohex printsize flash_app
+all: clean makedir $(OBJS) $(OBJS_AS) moveobjects linkobjects elftohex printsize
 
 clean:
 	$(RM) ./*.o
