@@ -48,10 +48,11 @@ bool os_handler(enum OS_EVENT event, uint8_t* data);
 #endif   // BLE_INCLUDE
 
 #if defined(RTC_INCLUDE)
-   #define IS_RTC_HZ_EVENT(counter, hz)     (counter == (RTC_FRQ / hz))               
+   #define OS_IS_RTC_HZ_EVENT(counter, hz)     (counter == (RTC_FRQ / hz))               
 #endif   // RTC_INCLUDE
-#endif   // _OS_H_
 
 #if defined(UART_INCLUDE)
    bool os_uart_send_data(uint8_t* data, uint16_t length);
 #endif   // UART_INCLUDE
+
+#endif   // _OS_H_

@@ -19,11 +19,12 @@
 
 #include "configuration.h"
 
+#include "app.h"
 #include "hw.h"
 #include "os.h"
 
 
-#define APP_FREQ         10   // App requested frequency. Derived from main Main RTC Clock Freq.
+#define APP_FREQ         1   // App requested frequency. Derived from main Main RTC Clock Freq.
 
 #if defined(RTC_INCLUDE)
    uint32_t rtc_counter;
@@ -35,18 +36,18 @@ void app_rtc_handler(void)
 {
    rtc_counter++;
 
-   if (IS_RTC_HZ_EVENT(rtc_counter, APP_FREQ))
-   {
-      rtc_counter = 0;
-
+   if (OS_IS_RTC_HZ_EVENT(rtc_counter, APP_FREQ))
+   {  
       #if defined(BLE_NUS_INCLUDE)
          char demoMessage[] = "Hello Message";
-         os_ble_nus_send_data(demoMessage, sizeof(demoMessage));
+         os_ble_nus_send_data(&rtc_counter, sizeof(rtc_counter));
       #endif   // BLE_NUS_INCLUDE
 
       #if defined(UART_INCLUDE)
          os_uart_send_data(demoMessage, sizeof(demoMessage));
       #endif   // UART_INCLUDE
+
+         rtc_counter = 0;
    }
 }
 #endif
