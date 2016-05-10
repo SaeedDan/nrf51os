@@ -50,5 +50,7 @@ static inline bool i2c_read(uint8_t slave_address, uint8_t register_address, uin
 
    return false;
 }
+
+
 #endif // RTC_INCLUDE && NRF51_MPU9250
 #endif // _APP_H_

@@ -58,6 +58,10 @@ INCS    += -I./app/
 INCS    += -I./bsp/
 INCS    += -I./os/
 INCS    += -I./external/mpu9250/
+INCS    += -I./external/mpu9250/mpl/
+INCS    += -I./external/mpu9250/mllite/
+INCS    += -I./external/mpu9250/include/
+INCS    += -I./external/mpu9250/USB_Common/
 INCS 	+= -I../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/util/
@@ -89,6 +93,7 @@ SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/t
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/util/*.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/common/softdevice_handler/*.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/scheduler/app_scheduler.c))
+SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/hal/nrf_delay.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/rtc/*.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/common/*.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/pstorage/pstorage.c))
@@ -108,11 +113,13 @@ SRC_PTH += ./bsp/
 SRC_PTH += ./os/
 SRC_PTH += ./peripherals/
 SRC_PTH += ./external/mpu9250/
+SRC_PTH += ./external/mpu9250/mpl/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/util/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/common/softdevice_handler/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/scheduler/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/device/
+SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/hal/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/rtc/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/common/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/pstorage/
@@ -125,14 +132,18 @@ SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/ble/common/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/ble/ble_advertising/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/ble/ble_services/ble_nus/
 SRC_PTH_AS += ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
-L_COMMON += ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
+L_COMMON = ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
+L_9250   = ./external/mpu9250/mpl
 L_SCRIPT = ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/toolchain/armgcc/armgcc_s310_nrf51422_xxaa.ld
 
 
 # Flags
-CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall -DNRF51  -DSOFTDEVICE_PRESENT -DBLE_STACK_SUPPORT_REQD -DS310 -mfloat-abi=soft  -ffunction-sections -fdata-sections -fno-strict-aliasing  -fno-builtin --short-enums
-AFLAGS   = -x assembler-with-cpp -DSOFTDEVICE_PRESENT -DNRF51 -DBLE_STACK_SUPPORT_REQD -DS310
-LDFLAGS  = -mcpu=cortex-m0 -mthumb -mabi=aapcs -L$(L_COMMON) -T$(L_SCRIPT) -Xlinker -Map=$(PRJ)/$(PRJ).map -Wl,--gc-sections -lc -lnosys #-nostartfiles -nodefaultlibs -nostdlib
+CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall  -mfloat-abi=soft # -ffunction-sections -fdata-sections -fno-strict-aliasing  -fno-builtin --short-enums
+CFLAGS   += -DNRF51  -DSOFTDEVICE_PRESENT -DBLE_STACK_SUPPORT_REQD -DS310
+#CFLAGS   += -DEMPL -DUSE_DMP -DMPU9250 -DREMOVE_LOGGING -DMPL_LPG_NDEBUG=1
+CFLAGS   += -DEMPL -DUSE_DMP -DMPU9150 -DREMOVE_LOGGING -DMPL_LOG_NDEBUG=0
+AFLAGS   = -x assembler-with-cpp -DSOFTDEVICE_PRESENT -DNRF51 -DBLE_STACK_SUPPORT_REQD -DS310 -DNRF51 -DEMPL -DUSE_DMP -DMPU9150 -DREMOVE_LOGGING  -DMPL_LPG_NDEBUG=1
+LDFLAGS = -mcpu=cortex-m0 -mthumb -mabi=aapcs -L$(L_9250) -L$(L_COMMON) -T$(L_SCRIPT) -Xlinker -Map=$(PRJ)/$(PRJ).map #-nostartfiles -nodefaultlibs -nostdlib
 
 
 # Source Lookup Paths
