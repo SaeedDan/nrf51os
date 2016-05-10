@@ -36,7 +36,7 @@ else
 	RM 	  	= rm -rf
 	MV 	  	= mv
 
-	ifeq ($(UNAME_S), Darwin) 
+	ifeq ($(UNAME_S), Darwin)
 		NRFJPROG    	= ../resources/nRF5x-CommandLineTools/nRF5x-Command-Line-Tools_8_4_0_OSX/nrfjprog/nrfjprog
 		ARM_GCC_LOC     = ../resources/gcc-arm-none-eabi-4_9-2015q3-20150921-mac/gcc-arm-none-eabi-4_9-2015q3
 	else
@@ -53,17 +53,17 @@ endif
 
 # Source Collection
 PRJ      = _cyccmp
-INCS    += -I. 
+INCS    += -I.
 INCS    += -I./app/
 INCS    += -I./bsp/
-INCS    += -I./os/ 
-INCS    += -I./external/mpu9250/ 
+INCS    += -I./os/
+INCS    += -I./external/mpu9250/
 INCS 	+= -I../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/util/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/common/softdevice_handler/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/scheduler/
-INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/headers/ 
+INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/headers/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/device/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/hal/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/drivers_nrf/rtc/

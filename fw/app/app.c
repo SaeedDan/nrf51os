@@ -40,14 +40,13 @@ void app_rtc_handler(void)
    {  
       #if defined(BLE_NUS_INCLUDE)
          char pingMessage[] = "PING!";
-         os_ble_nus_send_data(&pingMessage, sizeof(pingMessage));
+         os_ble_nus_send_data((uint8_t*) pingMessage, sizeof(pingMessage));
       #endif   // BLE_NUS_INCLUDE
-
       #if defined(UART_INCLUDE)
-         os_uart_send_data(pingMessage, sizeof(pingMessage));
+         os_uart_send_data((uint8_t*)pingMessage, sizeof(pingMessage));
       #endif   // UART_INCLUDE
 
-         rtc_counter = 0;
+      rtc_counter = 0;
    }
 }
 #endif

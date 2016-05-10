@@ -54,6 +54,8 @@ static volatile uint8_t  event;
 static uint8_t* running_event_data;
 #if defined(RTC_INCLUDE)
    const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(1);
+   static uint32_t os_rtc_time_ms = 0;
+   static uint32_t os_cumulative_rtc_ticks = 0;
 #endif
 #if defined(BLE_INCLUDE)
    static uint32_t ble_connection_handle;
@@ -183,7 +185,15 @@ static void os_rtc_evt_handler(nrf_drv_rtc_int_type_t int_type)
    if (int_type == NRF_DRV_RTC_INT_TICK)
    {
       event |= EVENT_RTC_TICK;
+
+      // TODO: Ugly and coarse way to convert to ms. FIX!
+      os_rtc_time_ms = os_cumulative_rtc_ticks / 32;  // Convert to ms.
    }
+}
+
+void os_get_time_ms(uint32_t* timestamp)
+{
+   *timestamp = os_rtc_time_ms;
 }
 #endif   // RTC_INCLUDE
 
@@ -365,7 +375,6 @@ static void os_uart_event_handle(app_uart_evt_t * p_event)
 {
     static uint8_t data_array[BLE_NUS_MAX_DATA_LEN];
     static uint8_t index = 0;
-    uint32_t       err_code;
 
     switch (p_event->evt_type)
     {

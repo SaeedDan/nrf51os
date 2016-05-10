@@ -20,7 +20,7 @@
 #define BLE_INCLUDE
 #define RTC_INCLUDE        
 #define UART_INCLUDE
-//#define TWI_INCLUDE
+#define TWI_INCLUDE
 // END APPLICATION CONFIGURATION OPTIONS
 
 #if defined(BLE_INCLUDE)
@@ -44,6 +44,13 @@
 #if defined(RTC_INCLUDE)
    #define RTC_FRQ                          10922
 #endif   // RTC_INCLUDE
+
+#if defined(TWI_INCLUDE)
+   #define MPU9250
+   #ifdef MPU9250
+      #define NRF51_MPU9250
+   #endif   // MPU9050
+#endif   // TWI_INCLUDE
 
 #if defined(UART_INCLUDE)
 #endif   // UART_INCLUDE
