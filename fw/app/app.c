@@ -62,9 +62,8 @@ bool os_handler(enum OS_EVENT event, uint8_t* data)
    switch (event)
    {
      case OS_EVENT_BOOTUP:
-        hw_init();
-        inv_enable_in_use_auto_calibration();
-        inv_init_accel_maxmin();
+        hw_init(); 
+        inv_enable_in_use_auto_calibration();        
         break;
         
      #if defined(BLE_INCLUDE)
