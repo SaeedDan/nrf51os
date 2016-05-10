@@ -22,7 +22,7 @@
 #include "app.h"
 #include "hw.h"
 #include "os.h"
-#include "accel_auto_cal.h"
+#include "mpu.h"
 
 #define APP_FREQ         1   // App requested frequency. Derived from main Main RTC Clock Freq.
 
@@ -62,8 +62,8 @@ bool os_handler(enum OS_EVENT event, uint8_t* data)
    switch (event)
    {
      case OS_EVENT_BOOTUP:
-        hw_init(); 
-        inv_enable_in_use_auto_calibration();        
+        hw_init();
+        inv_init_mpl();
         break;
         
      #if defined(BLE_INCLUDE)
