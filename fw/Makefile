@@ -62,6 +62,7 @@ INCS    += -I./external/mpu9250/mpl/
 INCS    += -I./external/mpu9250/mllite/
 INCS    += -I./external/mpu9250/include/
 INCS    += -I./external/mpu9250/USB_Common/
+INCS    += -I./external/mpu9250/USB_Common/include/
 INCS 	+= -I../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
 INCS    += -I../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/util/
@@ -89,6 +90,8 @@ SRCS    += $(notdir $(wildcard ./bsp/*.c))
 SRCS    += $(notdir $(wildcard ./os/*.c))
 SRCS    += $(notdir $(wildcard ./peripherals/*.c))
 SRCS    += $(notdir $(wildcard ./external/mpu9250/*.c))
+SRCS    += $(notdir $(wildcard ./external/mpu9250/mllite/*.c))
+SRCS    += $(notdir $(wildcard ./external/mpu9250/USB_Common/*.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/system_nrf51422.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/util/*.c))
 SRCS    += $(notdir $(wildcard ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/common/softdevice_handler/*.c))
@@ -114,6 +117,10 @@ SRC_PTH += ./os/
 SRC_PTH += ./peripherals/
 SRC_PTH += ./external/mpu9250/
 SRC_PTH += ./external/mpu9250/mpl/
+SRC_PTH += ./external/mpu9250/mllite/
+SRC_PTH += ./external/mpu9250/USB_Common/
+SRC_PTH += ./external/mpu9250/USB_Common/include/
+SRC_PTH += ./external/mpu9250/include/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/libraries/util/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/common/softdevice_handler/
@@ -132,18 +139,18 @@ SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/ble/common/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/ble/ble_advertising/
 SRC_PTH += ../resources/nRF51_SDK_9.0.0_2e23562/components/ble/ble_services/ble_nus/
 SRC_PTH_AS += ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
-L_COMMON = ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
-L_9250   = ./external/mpu9250/mpl
-L_SCRIPT = ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/toolchain/armgcc/armgcc_s310_nrf51422_xxaa.ld
+L_COMMON     = ../resources/nRF51_SDK_9.0.0_2e23562/components/toolchain/gcc/
+L_9250_MPL   = ./external/mpu9250/mpl
+L_SCRIPT = ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s110/toolchain/armgcc/armgcc_s110_nrf51422_xxaa.ld
 
 
 # Flags
 CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall  -mfloat-abi=soft -O2 -ffunction-sections -fdata-sections -fno-strict-aliasing  -fno-builtin --short-enums
-CFLAGS   += -DNRF51  -DSOFTDEVICE_PRESENT -DBLE_STACK_SUPPORT_REQD -DS310
+CFLAGS   += -DNRF51  -DSOFTDEVICE_PRESENT -DBLE_STACK_SUPPORT_REQD -DS110
 #CFLAGS   += -DEMPL -DUSE_DMP -DMPU9250 -DREMOVE_LOGGING -DMPL_LPG_NDEBUG=1
-CFLAGS   += -DEMPL -DUSE_DMP -DMPU9150 -DREMOVE_LOGGING -DMPL_LOG_NDEBUG=1
-AFLAGS   = -x assembler-with-cpp -DSOFTDEVICE_PRESENT -DNRF51 -DBLE_STACK_SUPPORT_REQD -DS310 -DNRF51 -DEMPL -DUSE_DMP -DMPU9150 -DREMOVE_LOGGING  -DMPL_LPG_NDEBUG=1
-LDFLAGS = -mcpu=cortex-m0 -mthumb -mabi=aapcs -L$(L_9250) -L$(L_COMMON) -T$(L_SCRIPT) -Xlinker -Map=$(PRJ)/$(PRJ).map -Wl,--gc-sections #-nostartfiles -nodefaultlibs -nostdlib
+CFLAGS   += -DEMPL -DUSE_DMP -DMPU9150 -DREMOVE_LOGGING -DMPL_LOG_NDEBUG=0
+AFLAGS   = -x assembler-with-cpp -DSOFTDEVICE_PRESENT -DNRF51 -DBLE_STACK_SUPPORT_REQD -DS110 -DNRF51 -DEMPL -DUSE_DMP -DMPU9250 -DREMOVE_LOGGING  -DMPL_LPG_NDEBUG=0
+LDFLAGS = -mcpu=cortex-m0 -mthumb -mabi=aapcs -L$(L_9250_MPL) -L$(L_COMMON) -T$(L_SCRIPT) -Xlinker -Map=$(PRJ)/$(PRJ).map -Wl,--gc-sections #-nostartfiles -nodefaultlibs -nostdlib
 
 
 # Source Lookup Paths
@@ -188,5 +195,5 @@ flash_app:
 	$(NRFJPROG) --run
 
 flash_sd:
-	@echo Flashing s310_softdevice.hex
-	$(NRFJPROG) --program ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s310/hex/s310_softdevice.hex --sectorerase --verify
+	@echo Flashing s110_softdevice.hex
+	$(NRFJPROG) --program ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s110/hex/s110_softdevice.hex --sectorerase --verify

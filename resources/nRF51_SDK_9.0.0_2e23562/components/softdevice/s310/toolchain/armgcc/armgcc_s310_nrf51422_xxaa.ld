@@ -1,7 +1,7 @@
 /* Linker script to configure memory regions. */
 
 SEARCH_DIR(.)
-GROUP(-lgcc -lc -lnosys -llibmplmpu)
+GROUP(-lgcc -lc -lnosys)
 
 MEMORY
 {
