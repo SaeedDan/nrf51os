@@ -29,7 +29,7 @@
 
 #define delay_ms   nrf_delay_ms 
 #define get_ms     os_get_time_ms
-#define labs       abs
+//#define labs       abs
 #define fabs(x)    (((x)>0)?(x):-(x))
 #define min(a,b)   ((a<b)?a:b)
 #define log_i(...)     do {} while (0)

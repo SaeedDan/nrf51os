@@ -19,7 +19,7 @@
 // APPLICATION CONFIGURATION OPTIONS
 #define BLE_INCLUDE
 #define RTC_INCLUDE        
-#define UART_INCLUDE
+//#define UART_INCLUDE
 #define TWI_INCLUDE
 // END APPLICATION CONFIGURATION OPTIONS
 
@@ -30,7 +30,7 @@
    #define MAX_CONN_INTERVAL                MSEC_TO_UNITS(650, UNIT_1_25_MS)           /**< Maximum acceptable connection interval (0.65 second). */
    #define SLAVE_LATENCY                    0                                          /**< Slave latency. */
    #define CONN_SUP_TIMEOUT                 MSEC_TO_UNITS(4000, UNIT_10_MS)            /**< Connection supervisory timeout (4 seconds). */ 
-   #define DEVICE_NAME                      "Ball"
+   #define DEVICE_NAME                      "nrf51"
    #define APP_ADV_INTERVAL                 300                                        /**< The advertising interval (in units of 0.625 ms. This value corresponds to 25 ms). */
    #define APP_ADV_TIMEOUT_IN_SECONDS       180                                        /**< The advertising timeout in units of seconds. */
    #define SEC_PARAM_BOND                   0                                          /**< Perform bonding. */
@@ -42,7 +42,7 @@
 #endif   // BLE_INCLUDE
 
 #if defined(RTC_INCLUDE)
-   #define RTC_FRQ                          10922
+   #define RTC_TICK_FRQ                          100
 #endif   // RTC_INCLUDE
 
 #if defined(TWI_INCLUDE)

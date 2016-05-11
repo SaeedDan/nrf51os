@@ -145,7 +145,7 @@ L_SCRIPT = ../resources/nRF51_SDK_9.0.0_2e23562/components/softdevice/s110/toolc
 
 
 # Flags
-CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall  -mfloat-abi=soft -Os -ffunction-sections -fdata-sections -fno-strict-aliasing  -fno-builtin --short-enums
+CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall  -mfloat-abi=soft -ffunction-sections -fdata-sections -fno-strict-aliasing  -fno-builtin --short-enums
 CFLAGS   += -DNRF51  -DSOFTDEVICE_PRESENT -DBLE_STACK_SUPPORT_REQD -DS110
 #CFLAGS   += -DEMPL -DUSE_DMP -DMPU9250 -DREMOVE_LOGGING -DMPL_LPG_NDEBUG=1
 CFLAGS   += -DEMPL -DUSE_DMP -DMPU9150 -DREMOVE_LOGGING -DMPL_LOG_NDEBUG=0

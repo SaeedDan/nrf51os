@@ -22,17 +22,26 @@
 #include "app.h"
 #include "hw.h"
 #include "os.h"
-#include "accel_auto_cal.h"
+
+#include "inv_mpu.h"
+#include "inv_mpu_dmp_motion_driver.h"
+#include "invensense.h"
+#include "invensense_adv.h"
+#include "mltypes.h"
+#include "mpu.h"
 
 #define APP_FREQ         1   // App requested frequency. Derived from main Main RTC Clock Freq.
 
 #if defined(RTC_INCLUDE)
-   uint32_t rtc_counter;
+   static uint32_t rtc_counter;
 #endif   // RTC_INCLUDE
+#if defined(NRF51_MPU9250)
+   static uint8_t result = 5;
+#endif   // NRF51_MPU9250
 
 
 #if defined(RTC_INCLUDE)
-void app_rtc_handler(void)
+static void app_rtc_handler(void)
 {
    rtc_counter++;
 
@@ -40,7 +49,7 @@ void app_rtc_handler(void)
    {  
       #if defined(BLE_NUS_INCLUDE)
          char pingMessage[] = "PING!";
-         os_ble_nus_send_data((uint8_t*) pingMessage, sizeof(pingMessage));
+         os_ble_nus_send_data(&result, sizeof(result));
       #endif   // BLE_NUS_INCLUDE
       #if defined(UART_INCLUDE)
          os_uart_send_data((uint8_t*)pingMessage, sizeof(pingMessage));
@@ -49,10 +58,9 @@ void app_rtc_handler(void)
       rtc_counter = 0;
    }
 }
-#endif
+#endif   // RTC_INCLUDE
 
-
-void app_ble_handler(void)
+static void app_ble_handler(void)
 {
             
 }
@@ -62,8 +70,13 @@ bool os_handler(enum OS_EVENT event, uint8_t* data)
    switch (event)
    {
      case OS_EVENT_BOOTUP:
-        hw_init();
-        inv_enable_in_use_auto_calibration();
+     {
+        #if defined(NRF51_MPU9250)
+           // OS has booted up. Initialize app level modules and drivers.
+           struct int_param_s int_param;
+           result = mpu_init(&int_param);
+        #endif // NRF51_MPU9250
+     }
         break;
         
      #if defined(BLE_INCLUDE)

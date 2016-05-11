@@ -18,6 +18,9 @@
 
 #include "configuration.h"
 
+#if defined(UART_INCLUDE)
+   #include "app_uart.h"
+#endif
 #if defined (BLE_INCLUDE)
    #include "ble.h"
    #include "ble_advertising.h"
@@ -30,6 +33,7 @@
       #include "ble_nus.h"
    #endif   // BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE
+#include "hw.h"
 #include "nrf.h"
 #if defined(RTC_INCLUDE)
    #include "nrf_drv_rtc.h"
@@ -41,9 +45,6 @@
 #if defined(TWI_INCLUDE)
    #include "twi_master.h"
 #endif   // TWI_INCLUDE
-#if defined(UART_INCLUDE)
-   #include "app_uart.h"
-#endif
 
 
 #define EVENT_BLE       0x01
@@ -94,10 +95,12 @@ int main(void)
          ble_nus_init_t ble_nus_initial;
       #endif   // BLE_NUS_INCLUDE
    #endif   // BLE_INCLUDE
-   os_handler(OS_EVENT_BOOTUP, NULL);
-   
+
+   // Initialize the port map to a stable setting.      
+   hw_init();      
+         
    // Enable the SoftDevice and set the BLE Handler. 
-   SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_SYNTH_250_PPM, NULL);
+   SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_XTAL_75_PPM, NULL);
    #if defined(BLE_INCLUDE)
       #if defined(S110) || defined(S130) || defined(S310)
           // Enable BLE stack.
@@ -130,7 +133,10 @@ int main(void)
    #if defined(UART_INCLUDE)
       os_uart_init();
    #endif   // UART_INCLUDE
-   
+
+   // Send event to app that OS has booted up.   
+   os_handler(OS_EVENT_BOOTUP, NULL);
+      
    while (1)
    {
       // Event Dispatcher.
@@ -166,9 +172,14 @@ int main(void)
 static uint32_t os_rtc_init(void)
 {
    uint32_t error_code;
-
+   nrf_drv_rtc_config_t rtc_config;
+   
    // Init RTC instance.
-   error_code = nrf_drv_rtc_init(&rtc, NULL, os_rtc_evt_handler);
+   rtc_config.prescaler = (uint16_t)(32768 / RTC_TICK_FRQ)-1;
+   rtc_config.interrupt_priority = 3;   // Lowest priority.
+   rtc_config.reliable = false;
+   rtc_config.tick_latency = RTC_US_TO_TICKS(NRF_MAXIMUM_LATENCY_US, RTC_TICK_FRQ);
+   error_code = nrf_drv_rtc_init(&rtc, &rtc_config, os_rtc_evt_handler);
 
    // Enable tick event and interrupt.
    nrf_drv_rtc_tick_enable(&rtc, true);
@@ -293,6 +304,7 @@ static void os_ble_event_handler(ble_evt_t* evt)
          break;
       case BLE_GAP_EVT_DISCONNECTED:
          ble_connection_handle = BLE_CONN_HANDLE_INVALID;
+         os_ble_advertising_start();   // TODO: App should handle this.
          break;
       case BLE_GAP_EVT_SEC_PARAMS_REQUEST:
          sd_ble_gap_sec_params_reply(ble_connection_handle, BLE_GAP_SEC_STATUS_PAIRING_NOT_SUPP, NULL, NULL);
@@ -332,7 +344,8 @@ static void os_ble_event_handler(ble_evt_t* evt)
  
    static void os_ble_nus_data_handler(ble_nus_t * p_nus, uint8_t * p_data, uint16_t length)
    {
-      // Data received from Peer over BLE. 
+      // Data received from Peer over BLE.
+      
    }
 #endif   /// BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE
