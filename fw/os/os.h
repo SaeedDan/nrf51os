@@ -48,7 +48,6 @@ bool os_handler(enum OS_EVENT event, uint8_t* data);
 #endif   // BLE_INCLUDE
 
 #if defined(RTC_INCLUDE)
-   #define OS_IS_RTC_HZ_EVENT(counter, hz)     (counter == (RTC_TICK_FRQ / hz))
    void os_get_time_ms(uint32_t* timestamp);
 #endif   // RTC_INCLUDE
 

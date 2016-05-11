@@ -45,14 +45,15 @@ static void app_rtc_handler(void)
 {
    rtc_counter++;
 
-   if (OS_IS_RTC_HZ_EVENT(rtc_counter, APP_FREQ))
+   if (APP_HZ_EVENT(rtc_counter, APP_FREQ))
    {  
       #if defined(BLE_NUS_INCLUDE)
-         char pingMessage[] = "PING!";
-         os_ble_nus_send_data(&result, sizeof(result));
+         #if defined(NRF51_MPU9250)
+            os_ble_nus_send_data(result, sizeof(result));
+         #endif // NRF51_MPU9250
       #endif   // BLE_NUS_INCLUDE
       #if defined(UART_INCLUDE)
-         os_uart_send_data((uint8_t*)pingMessage, sizeof(pingMessage));
+         os_uart_send_data(&result, sizeof(result));
       #endif   // UART_INCLUDE
 
       rtc_counter = 0;

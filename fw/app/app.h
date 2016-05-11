@@ -21,6 +21,11 @@
 
 #include "configuration.h"
 
+
+#if defined(RTC_INCLUDE)
+   #define APP_HZ_EVENT(counter, hz)     (counter == (RTC_TICK_FRQ / hz))
+#endif   // RTC_INCLUDE
+
 #if defined(RTC_INCLUDE) && defined(NRF51_MPU9250)
 #include "twi_master.h"
 #include "nrf_delay.h"
