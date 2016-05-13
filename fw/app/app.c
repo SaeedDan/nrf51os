@@ -35,8 +35,8 @@
 #if defined(RTC_INCLUDE)
    static uint32_t rtc_counter;
 #endif   // RTC_INCLUDE
-#if defined(NRF51_MPU9250)
-   static uint8_t result = 5;
+#if defined(NRF51_MPU9150)
+   static int result = 123;
 #endif   // NRF51_MPU9250
 
 
@@ -48,8 +48,8 @@ static void app_rtc_handler(void)
    if (APP_HZ_EVENT(rtc_counter, APP_FREQ))
    {  
       #if defined(BLE_NUS_INCLUDE)
-         #if defined(NRF51_MPU9250)
-            os_ble_nus_send_data(result, sizeof(result));
+         #if defined(NRF51_MPU9150)
+            os_ble_nus_send_data(&result, sizeof(result));
          #endif // NRF51_MPU9250
       #endif   // BLE_NUS_INCLUDE
       #if defined(UART_INCLUDE)
@@ -72,7 +72,7 @@ bool os_handler(enum OS_EVENT event, uint8_t* data)
    {
      case OS_EVENT_BOOTUP:
      {
-        #if defined(NRF51_MPU9250)
+        #if defined(NRF51_MPU9150)
            // OS has booted up. Initialize app level modules and drivers.
            struct int_param_s int_param;
            result = mpu_init(&int_param);

@@ -42,7 +42,7 @@
  * min(int a, int b)
  */
 
-#if defined(NRF51_MPU9250)
+#if defined(NRF51_MPU9150)
    #include "app.h"
    static inline int reg_int_cb(struct int_param_s *int_param)
    {
@@ -92,7 +92,7 @@ static inline int reg_int_cb(struct int_param_s *int_param)
 #define i2c_read    msp430_i2c_read
 #define delay_ms    msp430_delay_ms
 #define get_ms      msp430_get_clock_ms
-static inline int reg_int_cb(struct int_param_s *int_param)
+static inline int regx_int_cb(struct int_param_s *int_param)
 {
     return msp430_reg_int_cb(int_param->cb, int_param->pin, int_param->lp_exit,
         int_param->active_low);
@@ -661,7 +661,7 @@ static int set_int_enable(unsigned char enable)
         st.chip_cfg.int_enable = tmp;
     } else {
         if (!st.chip_cfg.sensors)
-            return -1;
+           return -1;
         if (enable && st.chip_cfg.int_enable)
             return 0;
         if (enable)
@@ -689,7 +689,7 @@ int mpu_reg_dump(void)
             continue;
         if (i2c_read(st.hw->addr, ii, 1, &data))
             return -1;
-        log_i("%#5x: %#5x\r\n", ii, data);
+       log_i("%#5X: %#5X\R\N", ii, data);
     }
     return 0;
 }
@@ -732,7 +732,7 @@ int mpu_init(struct int_param_s *int_param)
     if (i2c_write(st.hw->addr, st.reg->pwr_mgmt_1, 1, data))
         return -1;
     delay_ms(100);
-
+    
     /* Wake up chip. */
     data[0] = 0x00;
     if (i2c_write(st.hw->addr, st.reg->pwr_mgmt_1, 1, data))
@@ -748,7 +748,7 @@ int mpu_init(struct int_param_s *int_param)
     if (i2c_write(st.hw->addr, st.reg->accel_cfg2, 1, data))
         return -1;
 #endif
-
+    
     /* Set to invalid values to ensure no I2C writes are skipped. */
     st.chip_cfg.sensors = 0xFF;
     st.chip_cfg.gyro_fsr = 0xFF;
@@ -782,7 +782,7 @@ int mpu_init(struct int_param_s *int_param)
         return -1;
     if (mpu_configure_fifo(0))
         return -1;
-
+    
 #ifndef EMPL_TARGET_STM32F4    
     if (int_param)
         reg_int_cb(int_param);
@@ -791,14 +791,15 @@ int mpu_init(struct int_param_s *int_param)
 #ifdef AK89xx_SECONDARY
     setup_compass();
     if (mpu_set_compass_sample_rate(10))
-        return -1;
+       return -1;
 #else
     /* Already disabled by setup_compass. */
     if (mpu_set_bypass(0))
         return -1;
 #endif
-
+    
     mpu_set_sensors(0);
+    
     return 0;
 }
 
@@ -1865,7 +1866,8 @@ int mpu_set_bypass(unsigned char bypass_on)
     if (st.chip_cfg.bypass_mode == bypass_on)
         return 0;
 
-    if (bypass_on) {
+    if (bypass_on)
+    {
         if (i2c_read(st.hw->addr, st.reg->user_ctrl, 1, &tmp))
             return -1;
         tmp &= ~BIT_AUX_IF_EN;
@@ -1877,9 +1879,11 @@ int mpu_set_bypass(unsigned char bypass_on)
             tmp |= BIT_ACTL;
         if (st.chip_cfg.latched_int)
             tmp |= BIT_LATCH_EN | BIT_ANY_RD_CLR;
-        if (i2c_write(st.hw->addr, st.reg->int_pin_cfg, 1, &tmp))
-            return -1;
-    } else {
+         if (i2c_write(st.hw->addr, st.reg->int_pin_cfg, 1, &tmp))
+            return -1;    
+    }
+    else
+    {
         /* Enable I2C master mode if compass is being used. */
         if (i2c_read(st.hw->addr, st.reg->user_ctrl, 1, &tmp))
             return -1;
@@ -2945,8 +2949,9 @@ static int setup_compass(void)
 {
     unsigned char data[4], akm_addr;
 
-    mpu_set_bypass(1);
-
+    // TODO: Handle interrupts such that it does not hang part or OS.
+    // mpu_set_bypass(1);
+    
     /* Find compass. Possible addresses range from 0x0C to 0x0F. */
     for (akm_addr = 0x0C; akm_addr <= 0x0F; akm_addr++) {
         int result;

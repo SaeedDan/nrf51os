@@ -45,7 +45,7 @@
 #if defined(TWI_INCLUDE)
    #include "twi_master.h"
 #endif   // TWI_INCLUDE
-
+#include "nrf_delay.h"
 
 #define EVENT_BLE       0x01
 #define EVENT_RTC_TICK  0x02
@@ -97,7 +97,7 @@ int main(void)
    #endif   // BLE_INCLUDE
 
    // Initialize the port map to a stable setting.      
-   hw_init();      
+   //hw_init();      
          
    // Enable the SoftDevice and set the BLE Handler. 
    SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_XTAL_75_PPM, NULL);
@@ -134,6 +134,8 @@ int main(void)
       os_uart_init();
    #endif   // UART_INCLUDE
 
+
+      nrf_delay_us(3000);   
    // Send event to app that OS has booted up.   
    os_handler(OS_EVENT_BOOTUP, NULL);
       

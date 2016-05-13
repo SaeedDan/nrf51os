@@ -149,7 +149,7 @@ CFLAGS   = -mcpu=cortex-m0 -mthumb -mabi=aapcs --std=gnu99 -Wall  -mfloat-abi=so
 CFLAGS   += -DNRF51  -DSOFTDEVICE_PRESENT -DBLE_STACK_SUPPORT_REQD -DS110
 #CFLAGS   += -DEMPL -DUSE_DMP -DMPU9250 -DREMOVE_LOGGING -DMPL_LPG_NDEBUG=1
 CFLAGS   += -DEMPL -DUSE_DMP -DMPU9150 -DREMOVE_LOGGING -DMPL_LOG_NDEBUG=0
-AFLAGS   = -x assembler-with-cpp -DSOFTDEVICE_PRESENT -DNRF51 -DBLE_STACK_SUPPORT_REQD -DS110 -DNRF51 -DEMPL -DUSE_DMP -DMPU9250 -DREMOVE_LOGGING  -DMPL_LPG_NDEBUG=0
+AFLAGS   = -x assembler-with-cpp -DSOFTDEVICE_PRESENT -DNRF51 -DBLE_STACK_SUPPORT_REQD -DS110 -DNRF51 -DEMPL -DUSE_DMP -DMPU9150 -DREMOVE_LOGGING  -DMPL_LPG_NDEBUG=0
 LDFLAGS = -mcpu=cortex-m0 -mthumb -mabi=aapcs -L$(L_9250_MPL) -L$(L_COMMON) -T$(L_SCRIPT) -Xlinker -Map=$(PRJ)/$(PRJ).map -Wl,--gc-sections #-nostartfiles -nodefaultlibs -nostdlib
 
 
@@ -159,7 +159,7 @@ vpath %.s $(SRC_PTH_AS)
 
 
 # Execution
-all: clean makedir $(OBJS) $(OBJS_AS) moveobjects linkobjects elftohex printsize
+all: clean makedir $(OBJS) $(OBJS_AS) moveobjects linkobjects elftohex printsize flash_app
 
 clean:
 	$(RM) ./*.o

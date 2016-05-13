@@ -110,7 +110,7 @@
 #define TWI0_INSTANCE_INDEX      0
 #endif
 
-#define TWI1_ENABLED 1
+#define TWI1_ENABLED 0
 
 #if (TWI1_ENABLED == 1)
 #define TWI1_CONFIG_FREQUENCY NRF_TWI_FREQ_250K

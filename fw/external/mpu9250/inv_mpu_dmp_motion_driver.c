@@ -36,14 +36,8 @@
  * get_ms(unsigned long *count)
  */
 
-#if defined(NRF51_MPU9250)
+#if defined(NRF51_MPU9150)
    #include "app.h"
-#define i2c_read(a, b, c, d)                   \
-   do                                          \
-   {                                           \
-      TWI_MASTER_TRANSFER((A << 7), &B, 1, TWI_DONT_ISSUE_STOP);\
-      return TWI_MASTER_TRANSFER((A << 7) | TWI_READ_BIT, D, C, TWI_ISSUE_STOP);\
-   } while (0)
    #define delay_ms   nrf_delay_ms 
    #define get_ms     os_get_time_ms
 #elif defined EMPL_TARGET_STM32F4
@@ -649,7 +643,7 @@ int dmp_set_accel_bias(long *bias)
 
     mpu_get_accel_sens(&accel_sens);
     accel_sf = (long long)accel_sens << 15;
-    #if defined(NRF51_MPU9250)
+    #if defined(NRF51_MPU9150)
        nrf_delay_ms(1);
     #else
        __no_operation();
