@@ -41,7 +41,7 @@
 #endif   // BLE_INCLUDE
 
 #if defined(RTC_INCLUDE)
-   #define RTC_FRQ                          10922
+   #define RTC_FRQ                          1024
 #endif   // RTC_INCLUDE
 
 #if defined(UART_INCLUDE)
