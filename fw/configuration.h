@@ -18,9 +18,10 @@
 
 // APPLICATION CONFIGURATION OPTIONS
 #define BLE_INCLUDE
-#define RTC_INCLUDE        
-//#define UART_INCLUDE
+#define GPIOTE_INCLUDE
+#define RTC_INCLUDE
 #define TWI_INCLUDE
+//#define UART_INCLUDE
 // END APPLICATION CONFIGURATION OPTIONS
 
 #if defined(BLE_INCLUDE)
@@ -41,8 +42,21 @@
    #define SEC_PARAM_MAX_KEY_SIZE           16                                         /**< Maximum encryption key size. */
 #endif   // BLE_INCLUDE
 
+#if defined(PINT_INCLUDE)
+   #define PINT_POLARITY_LOW               0
+   #define PINT_POLARITY_HI                1
+   #define PINT_POLARITY_TOGGLE            2
+
+   #define PINT_NOPULL                     0
+   #define PINT_PULLHI                     1
+   #define PINT_PULLLO                     2
+
+   #define PINT_INT_PINS                   1
+   #define PINT_INT_PIN                    30
+#endif   // PINT_INCLUDE
+
 #if defined(RTC_INCLUDE)
-   #define RTC_TICK_FRQ                          100
+   #define RTC_TICK_FRQ                   100
 #endif   // RTC_INCLUDE
 
 #if defined(TWI_INCLUDE)

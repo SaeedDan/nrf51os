@@ -35,6 +35,9 @@
 #endif   // BLE_INCLUDE
 #include "hw.h"
 #include "nrf.h"
+#if defined(GPIOTE_INCLUDE)
+   #include "nrf_drv_gpiote.h"
+#endif    // GPIOTE_INCLUDE
 #if defined(RTC_INCLUDE)
    #include "nrf_drv_rtc.h"
 #endif   // RTC_INCLUDE
@@ -49,10 +52,13 @@
 
 #define EVENT_BLE       0x01
 #define EVENT_RTC_TICK  0x02
-
+#define EVENT_PINT      0x04
 
 static volatile uint8_t  event;
 static uint8_t* running_event_data;
+#if defined(PINT_INCLUDE)
+   static nrf_drv_gpiote_in_config_t gpiote_config;
+#endif   // PINT_INCLUDE
 #if defined(RTC_INCLUDE)
    const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(1);
    static uint32_t os_rtc_time_ms = 0;
@@ -74,6 +80,9 @@ static uint8_t* running_event_data;
       static void os_ble_nus_data_handler(ble_nus_t * p_nus, uint8_t * p_data, uint16_t length);   
    #endif   // BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE
+#if defined(PINT_INCLUDE)
+   static void os_pint_interrupt_handler(void);
+#endif   // PINT_INCLUDE
 #if defined(RTC_INCLUDE)
    static uint32_t  os_rtc_init(void);
    static void os_rtc_evt_handler(nrf_drv_rtc_int_type_t int_type);
@@ -123,6 +132,9 @@ int main(void)
          ble_nus_init(&ble_nus, &ble_nus_initial);
       #endif   // BLE_NUS_INCLUDE
    #endif   // BLE_INCLUDE
+   #if defined(GPIOTE_INCLUDE)
+      nrf_drv_gpiote_init();         
+   #endif // GPIOTE_INCLUDE
    #if defined(RTC_INCLUDE)
       // Enable the RTC Timer.
       os_rtc_init();
@@ -154,6 +166,12 @@ int main(void)
          event &= ~EVENT_RTC_TICK;
          running_event_data = NULL;
       }
+      else if (event & EVENT_PINT)
+      {
+         running_event = OS_EVENT_PINT;
+         event &= ~EVENT_PINT;
+         running_event_data = NULL;
+      }
       sd_nvic_critical_region_exit(critical_region);
 
       // Dispatch Event to Application.
@@ -169,6 +187,39 @@ int main(void)
 
    return -1;
 }
+
+#if defined(PINT_INCLUDE)
+bool os_pin_int_set(uint8_t pin, uint8_t polarity, uint8_t pulled_up)
+{
+   // POLARITY.
+   if (polarity == PINT_POLARITY_LOW)
+      gpiote_config.sense = NRF_GPIOTE_POLARITY_HITOLO;
+   else if (polarity == PINT_POLARITY_HI)
+      gpiote_config.sense = NRF_GPIOTE_POLARITY_HITOLO;           
+   else
+      gpiote_config.sense = NRF_GPIOTE_POLARITY_TOGGLE;
+
+   // PULL 
+   if (pulled_up == PINT_NOPULL)
+      gpiote_config.pull = NRF_GPIO_PIN_NOPULL;
+   else if (pulled_up == PINT_PULLHI)
+      gpiote_config.pull = NRF_GPIO_PIN_PULLUP;
+   else
+      gpiote_config.pull = NRF_GPIO_PIN_PULLDOWN;
+
+   gpiote_config.is_watcher = false;
+   gpiote_config.hi_accuracy = false;
+   
+   return nrf_drv_gpiote_in_init(pin, &gpiote_config, os_pint_interrupt_handler);
+}
+
+static void os_pint_interrupt_handler(void)
+{
+   // TODO: Detect proper pin here.
+   event |= EVENT_PINT;
+}
+#endif   // PINT_INCLUDE
+
 
 #if defined(RTC_INCLUDE)
 static uint32_t os_rtc_init(void)

@@ -26,7 +26,8 @@ enum OS_EVENT
 {
    OS_EVENT_BOOTUP,
    OS_EVENT_BLE,
-   OS_EVENT_RTC
+   OS_EVENT_RTC,
+   OS_EVENT_PINT
 };
 
 bool os_handler(enum OS_EVENT event, uint8_t* data);
@@ -46,6 +47,10 @@ bool os_handler(enum OS_EVENT event, uint8_t* data);
       bool os_ble_nus_send_data(uint8_t* data, uint16_t length);
    #endif   // BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE
+
+#if defined(PINT_INCLUDE)
+   bool os_pin_int_set(uint8_t pin, uint8_t polarity, uint8_t pulled_up);
+#endif   // PINT_INCLUDE
 
 #if defined(RTC_INCLUDE)
    void os_get_time_ms(uint32_t* timestamp);

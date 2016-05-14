@@ -36,7 +36,8 @@
    static uint32_t rtc_counter;
 #endif   // RTC_INCLUDE
 #if defined(NRF51_MPU9150)
-   static int result = 123;
+   static int result = 0xAA;
+   unsigned char *mpl_key = (unsigned char*)"eMPL 5.1";
 #endif   // NRF51_MPU9250
 
 
@@ -72,11 +73,15 @@ bool os_handler(enum OS_EVENT event, uint8_t* data)
    {
      case OS_EVENT_BOOTUP:
      {
+        #if defined(PINT_INCLUDE)
+        os_pin_int_set(PINT_INT_PIN, PINT_POLARITY_LOW, PINT_PULLHI);  
+        #endif   // PINT_INCLUDE
         #if defined(NRF51_MPU9150)
            // OS has booted up. Initialize app level modules and drivers.
+           // Initialize HW Driver to default configuration.
            struct int_param_s int_param;
-           result = mpu_init(&int_param);
-        #endif // NRF51_MPU9250
+           result = mpu_init(&int_param);   
+       #endif // NRF51_MPU9250
      }
         break;
         
@@ -91,6 +96,14 @@ bool os_handler(enum OS_EVENT event, uint8_t* data)
          break;
       #endif
 
+     #if defined(PINT_INCLUDE)
+     case OS_EVENT_PINT:
+     {
+        
+     }
+       break;
+     #endif  // PINT_INCLUDE
+         
       default:
          break;
    }

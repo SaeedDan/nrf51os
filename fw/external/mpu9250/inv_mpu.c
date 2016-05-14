@@ -44,10 +44,10 @@
 
 #if defined(NRF51_MPU9150)
    #include "app.h"
-   static inline int reg_int_cb(struct int_param_s *int_param)
-   {
-      return 0;   // TODO: Do something useful here.
-   }
+static inline void reg_int_cb(struct int_param_s* pin_int)
+{
+   return 0;
+}
 #elif defined EMPL_TARGET_STM32F4
 #include "i2c.h"   
 #include "main.h"
@@ -783,15 +783,16 @@ int mpu_init(struct int_param_s *int_param)
     if (mpu_configure_fifo(0))
         return -1;
     
-#ifndef EMPL_TARGET_STM32F4    
+#ifndef EMPL_TARGET_STM32F4
     if (int_param)
         reg_int_cb(int_param);
 #endif
 
 #ifdef AK89xx_SECONDARY
-    setup_compass();
-    if (mpu_set_compass_sample_rate(10))
-       return -1;
+    // TODO: No Int handling so removing this.
+    /* setup_compass(); */
+    /* if (mpu_set_compass_sample_rate(10)) */
+    /*    return -1; */
 #else
     /* Already disabled by setup_compass. */
     if (mpu_set_bypass(0))
@@ -2799,6 +2800,7 @@ int mpu_write_mem(unsigned short mem_addr, unsigned short length,
 
     if (!data)
         return -1;
+    
     if (!st.chip_cfg.sensors)
         return -1;
 
@@ -2869,7 +2871,7 @@ int mpu_load_firmware(unsigned short length, const unsigned char *firmware,
     if (st.chip_cfg.dmp_loaded)
         /* DMP should only be loaded once. */
         return -1;
-
+    
     if (!firmware)
         return -1;
     for (ii = 0; ii < length; ii += this_write) {
@@ -2949,8 +2951,8 @@ static int setup_compass(void)
 {
     unsigned char data[4], akm_addr;
 
-    // TODO: Handle interrupts such that it does not hang part or OS.
-    // mpu_set_bypass(1);
+
+    mpu_set_bypass(1);
     
     /* Find compass. Possible addresses range from 0x0C to 0x0F. */
     for (akm_addr = 0x0C; akm_addr <= 0x0F; akm_addr++) {
