@@ -252,8 +252,8 @@ static void os_rtc_evt_handler(nrf_drv_rtc_int_type_t int_type)
    {
       event |= EVENT_RTC_TICK;
 
-      // TODO: Ugly and coarse way to convert to ms. FIX!
-      os_rtc_time_ms = os_cumulative_rtc_ticks / 32;  // Convert to ms.
+      os_cumulative_rtc_ticks++;
+      os_rtc_time_ms = (os_cumulative_rtc_ticks * 1000) / RTC_TICK_FRQ ;  // Convert to ms.
    }
 }
 

@@ -114,7 +114,7 @@ static void app_pint_handler(void)
       uint8_t fifo_data_to_send[20];
       memcpy(fifo_data_to_send, fifo_packet.gyro, sizeof(fifo_packet.gyro));
       memcpy(fifo_data_to_send + sizeof(fifo_packet.gyro), fifo_packet.accel, sizeof(fifo_packet.accel));
-      memcpy(fifo_data_to_send + sizeof(fifo_packet.gyro) + sizeof(fifo_packet.accel), fifo_packet.timestamp, sizeof(fifo_packet.timestamp));
+      memcpy(fifo_data_to_send + sizeof(fifo_packet.gyro) + sizeof(fifo_packet.accel), &fifo_packet.timestamp, sizeof(fifo_packet.timestamp));
       os_ble_nus_send_data(fifo_data_to_send, sizeof(fifo_data_to_send));
    #endif // BLE_NUS_INCLUDE
 }
