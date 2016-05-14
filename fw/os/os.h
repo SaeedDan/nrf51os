@@ -49,7 +49,7 @@ bool os_handler(enum OS_EVENT event, uint8_t* data);
 #endif   // BLE_INCLUDE
 
 #if defined(PINT_INCLUDE)
-   bool os_pin_int_set(uint8_t pin, uint8_t polarity, uint8_t pulled_up);
+   void os_pin_int_set(uint8_t pin, uint8_t polarity, uint8_t pulled_up);
 #endif   // PINT_INCLUDE
 
 #if defined(RTC_INCLUDE)

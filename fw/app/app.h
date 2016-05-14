@@ -26,14 +26,16 @@
    #define APP_HZ_EVENT(counter, hz)     (counter == (RTC_TICK_FRQ / hz))
 #endif   // RTC_INCLUDE
 
-#if defined(RTC_INCLUDE) && defined(NRF51_MPU9150)
+#if defined(NRF51_MPU9150)
 #include "twi_master.h"
 #include "nrf_delay.h"
 #include "os.h"
 
 
-#define delay_ms   nrf_delay_ms 
-#define get_ms     os_get_time_ms
+#define delay_ms   nrf_delay_ms
+#if defined(RTC_INCLUDE)
+   #define get_ms     os_get_time_ms
+#endif  // RTC_INCLUDE
 //#define labs       abs
 #define fabs(x)    (((x)>0)?(x):-(x))
 #define min(a,b)   ((a<b)?a:b)
@@ -58,5 +60,5 @@ static inline bool i2c_read(uint8_t slave_address, uint8_t register_address, uin
    return true;
 }
 
-#endif // RTC_INCLUDE && NRF51_MPU9250
+#endif  // NRF51_MPU9250
 #endif // _APP_H_

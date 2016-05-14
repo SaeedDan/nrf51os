@@ -41,7 +41,7 @@ typedef struct
 
 /**@brief Macro for configuring a pin to use a GPIO IN or PORT EVENT to detect low-to-high transition.
  * @details Set hi_accu to true to use IN_EVENT. */
-#define GPIOTE_CONFIG_IN_SENSE_LOTOHI(hi_accu)     \
+#define GPIOTE_CONFIG_IN_SENSE_LOTOHI(hi_accu)   \
     {                                            \
         .is_watcher = false,                     \
         .hi_accuracy = hi_accu,                  \
@@ -51,7 +51,7 @@ typedef struct
 
 /**@brief Macro for configuring a pin to use a GPIO IN or PORT EVENT to detect high-to-low transition.
  * @details Set hi_accu to true to use IN_EVENT. */
-#define GPIOTE_CONFIG_IN_SENSE_HITOLO(hi_accu)      \
+#define GPIOTE_CONFIG_IN_SENSE_HITOLO(hi_accu)   \
     {                                            \
         .is_watcher = false,                     \
         .hi_accuracy = hi_accu,                  \
