@@ -22,9 +22,15 @@
 
 void hw_init(void)
 {
-   // For this template project. Configure all pins as output.
-   // For a custom designed board, define board pin configuration
-   // in hw_confuguration.h and initialize it accordingly usign the
-   // nrf_gpio APIs.
+   // Set Outputs.
+   nrf_gpio_pin_set(GPS_NRESET);
+   nrf_gpio_pin_set(MEM_NCS);
+   
+   // Configure Ouputs.
    nrf_gpio_range_cfg_output(0, 30);
+
+    // Configure Inputs.
+   nrf_gpio_cfg_input(MPR_INT2, GPIO_PIN_CNF_PULL_Disabled);   
+   nrf_gpio_cfg_input(MPR_INT1, GPIO_PIN_CNF_PULL_Disabled);
+   nrf_gpio_cfg_input(MPU_INT, GPIO_PIN_CNF_PULL_Disabled);
 }

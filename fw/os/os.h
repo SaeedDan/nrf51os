@@ -26,7 +26,8 @@ enum OS_EVENT
 {
    OS_EVENT_BOOTUP,
    OS_EVENT_BLE,
-   OS_EVENT_RTC
+   OS_EVENT_RTC,
+   OS_EVENT_PINT
 };
 
 bool os_handler(enum OS_EVENT event, uint8_t* data);
@@ -47,8 +48,12 @@ bool os_handler(enum OS_EVENT event, uint8_t* data);
    #endif   // BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE
 
+#if defined(PINT_INCLUDE)
+   void os_pin_int_set(uint8_t pin, uint8_t polarity, uint8_t pulled_up);
+#endif   // PINT_INCLUDE
+
 #if defined(RTC_INCLUDE)
-   #define OS_IS_RTC_HZ_EVENT(counter, hz)     (counter == (RTC_FRQ / hz))               
+   void os_get_time_ms(uint32_t* timestamp);
 #endif   // RTC_INCLUDE
 
 #if defined(UART_INCLUDE)

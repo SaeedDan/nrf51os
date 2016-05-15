@@ -18,6 +18,9 @@
 
 #include "configuration.h"
 
+#if defined(UART_INCLUDE)
+   #include "app_uart.h"
+#endif
 #if defined (BLE_INCLUDE)
    #include "ble.h"
    #include "ble_advertising.h"
@@ -30,7 +33,11 @@
       #include "ble_nus.h"
    #endif   // BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE
+#include "hw.h"
 #include "nrf.h"
+#if defined(PINT_INCLUDE)
+   #include "nrf_drv_gpiote.h"
+#endif    // PINT_INCLUDE
 #if defined(RTC_INCLUDE)
    #include "nrf_drv_rtc.h"
 #endif   // RTC_INCLUDE
@@ -38,19 +45,24 @@
 #include "nordic_common.h"
 #include "os.h"
 #include "softdevice_handler.h"
-#if defined(UART_INCLUDE)
-   #include "app_uart.h"
-#endif
-
+#if defined(TWI_INCLUDE)
+   #include "twi_master.h"
+#endif   // TWI_INCLUDE
+#include "nrf_delay.h"
 
 #define EVENT_BLE       0x01
 #define EVENT_RTC_TICK  0x02
-
+#define EVENT_PINT      0x04
 
 static volatile uint8_t  event;
 static uint8_t* running_event_data;
+#if defined(PINT_INCLUDE)
+   static nrf_drv_gpiote_in_config_t gpiote_config;
+#endif   // PINT_INCLUDE
 #if defined(RTC_INCLUDE)
    const nrf_drv_rtc_t rtc = NRF_DRV_RTC_INSTANCE(1);
+   static uint32_t os_rtc_time_ms = 0;
+   static uint32_t os_cumulative_rtc_ticks = 0;
 #endif
 #if defined(BLE_INCLUDE)
    static uint32_t ble_connection_handle;
@@ -68,6 +80,9 @@ static uint8_t* running_event_data;
       static void os_ble_nus_data_handler(ble_nus_t * p_nus, uint8_t * p_data, uint16_t length);   
    #endif   // BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE
+#if defined(PINT_INCLUDE)
+   static void os_pint_interrupt_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action);
+#endif   // PINT_INCLUDE
 #if defined(RTC_INCLUDE)
    static uint32_t  os_rtc_init(void);
    static void os_rtc_evt_handler(nrf_drv_rtc_int_type_t int_type);
@@ -89,10 +104,12 @@ int main(void)
          ble_nus_init_t ble_nus_initial;
       #endif   // BLE_NUS_INCLUDE
    #endif   // BLE_INCLUDE
-   os_handler(OS_EVENT_BOOTUP, NULL);
-   
+
+   // Initialize the port map to a stable setting.      
+   hw_init();      
+         
    // Enable the SoftDevice and set the BLE Handler. 
-   SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_SYNTH_250_PPM, NULL);
+   SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_XTAL_75_PPM, NULL);
    #if defined(BLE_INCLUDE)
       #if defined(S110) || defined(S130) || defined(S310)
           // Enable BLE stack.
@@ -115,14 +132,25 @@ int main(void)
          ble_nus_init(&ble_nus, &ble_nus_initial);
       #endif   // BLE_NUS_INCLUDE
    #endif   // BLE_INCLUDE
+   #if defined(PINT_INCLUDE)
+      nrf_drv_gpiote_init();         
+   #endif // PINT_INCLUDE
    #if defined(RTC_INCLUDE)
       // Enable the RTC Timer.
       os_rtc_init();
    #endif   // RTC_INCLUDE
+   #if defined(TWI_INCLUDE)
+      twi_master_init();      
+   #endif   // TWI_INCLUDE
    #if defined(UART_INCLUDE)
       os_uart_init();
    #endif   // UART_INCLUDE
-   
+
+
+      nrf_delay_us(3000);   
+   // Send event to app that OS has booted up.   
+   os_handler(OS_EVENT_BOOTUP, NULL);
+      
    while (1)
    {
       // Event Dispatcher.
@@ -136,6 +164,12 @@ int main(void)
       {
          running_event = OS_EVENT_RTC;
          event &= ~EVENT_RTC_TICK;
+         running_event_data = NULL;
+      }
+      else if (event & EVENT_PINT)
+      {
+         running_event = OS_EVENT_PINT;
+         event &= ~EVENT_PINT;
          running_event_data = NULL;
       }
       sd_nvic_critical_region_exit(critical_region);
@@ -154,13 +188,52 @@ int main(void)
    return -1;
 }
 
+#if defined(PINT_INCLUDE)
+void os_pin_int_set(uint8_t pin, uint8_t polarity, uint8_t pulled_up)
+{
+   // POLARITY.
+   if (polarity == PINT_POLARITY_LOW)
+      gpiote_config.sense = NRF_GPIOTE_POLARITY_HITOLO;
+   else if (polarity == PINT_POLARITY_HI)
+      gpiote_config.sense = NRF_GPIOTE_POLARITY_LOTOHI;
+   else
+      gpiote_config.sense = NRF_GPIOTE_POLARITY_TOGGLE;
+
+   // PULL 
+   if (pulled_up == PINT_NOPULL)
+      gpiote_config.pull = NRF_GPIO_PIN_NOPULL;
+   else if (pulled_up == PINT_PULLHI)
+      gpiote_config.pull = NRF_GPIO_PIN_PULLUP;
+   else
+      gpiote_config.pull = NRF_GPIO_PIN_PULLDOWN;
+
+   gpiote_config.is_watcher = false;
+   gpiote_config.hi_accuracy = true;
+   
+   nrf_drv_gpiote_in_init(pin, &gpiote_config, os_pint_interrupt_handler);
+   nrf_drv_gpiote_in_event_enable(pin, true);
+}
+
+static void os_pint_interrupt_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
+{
+   // TODO: Detect proper pin here.
+   event |= EVENT_PINT;
+}
+#endif   // PINT_INCLUDE
+
+
 #if defined(RTC_INCLUDE)
 static uint32_t os_rtc_init(void)
 {
    uint32_t error_code;
-
+   nrf_drv_rtc_config_t rtc_config;
+   
    // Init RTC instance.
-   error_code = nrf_drv_rtc_init(&rtc, NULL, os_rtc_evt_handler);
+   rtc_config.prescaler = (uint16_t)(32768 / RTC_TICK_FRQ)-1;
+   rtc_config.interrupt_priority = 3;   // Lowest priority.
+   rtc_config.reliable = false;
+   rtc_config.tick_latency = RTC_US_TO_TICKS(NRF_MAXIMUM_LATENCY_US, RTC_TICK_FRQ);
+   error_code = nrf_drv_rtc_init(&rtc, &rtc_config, os_rtc_evt_handler);
 
    // Enable tick event and interrupt.
    nrf_drv_rtc_tick_enable(&rtc, true);
@@ -169,6 +242,7 @@ static uint32_t os_rtc_init(void)
    nrf_drv_rtc_enable(&rtc);
 
    return error_code;
+                        
 } 
 
 static void os_rtc_evt_handler(nrf_drv_rtc_int_type_t int_type)
@@ -177,7 +251,15 @@ static void os_rtc_evt_handler(nrf_drv_rtc_int_type_t int_type)
    if (int_type == NRF_DRV_RTC_INT_TICK)
    {
       event |= EVENT_RTC_TICK;
+
+      os_cumulative_rtc_ticks++;
+      os_rtc_time_ms = (os_cumulative_rtc_ticks * 1000) / RTC_TICK_FRQ ;  // Convert to ms.
    }
+}
+
+void os_get_time_ms(uint32_t* timestamp)
+{
+   *timestamp = os_rtc_time_ms;
 }
 #endif   // RTC_INCLUDE
 
@@ -277,6 +359,7 @@ static void os_ble_event_handler(ble_evt_t* evt)
          break;
       case BLE_GAP_EVT_DISCONNECTED:
          ble_connection_handle = BLE_CONN_HANDLE_INVALID;
+         os_ble_advertising_start();   // TODO: App should handle this.
          break;
       case BLE_GAP_EVT_SEC_PARAMS_REQUEST:
          sd_ble_gap_sec_params_reply(ble_connection_handle, BLE_GAP_SEC_STATUS_PAIRING_NOT_SUPP, NULL, NULL);
@@ -316,7 +399,8 @@ static void os_ble_event_handler(ble_evt_t* evt)
  
    static void os_ble_nus_data_handler(ble_nus_t * p_nus, uint8_t * p_data, uint16_t length)
    {
-      // Data received from Peer over BLE. 
+      // Data received from Peer over BLE.
+      
    }
 #endif   /// BLE_NUS_INCLUDE
 #endif   // BLE_INCLUDE
@@ -359,7 +443,6 @@ static void os_uart_event_handle(app_uart_evt_t * p_event)
 {
     static uint8_t data_array[BLE_NUS_MAX_DATA_LEN];
     static uint8_t index = 0;
-    uint32_t       err_code;
 
     switch (p_event->evt_type)
     {

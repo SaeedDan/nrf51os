@@ -18,7 +18,9 @@
 
 // APPLICATION CONFIGURATION OPTIONS
 #define BLE_INCLUDE
-#define RTC_INCLUDE        
+#define PINT_INCLUDE
+#define RTC_INCLUDE
+#define TWI_INCLUDE
 //#define UART_INCLUDE
 // END APPLICATION CONFIGURATION OPTIONS
 
@@ -29,7 +31,7 @@
    #define MAX_CONN_INTERVAL                MSEC_TO_UNITS(650, UNIT_1_25_MS)           /**< Maximum acceptable connection interval (0.65 second). */
    #define SLAVE_LATENCY                    0                                          /**< Slave latency. */
    #define CONN_SUP_TIMEOUT                 MSEC_TO_UNITS(4000, UNIT_10_MS)            /**< Connection supervisory timeout (4 seconds). */ 
-   #define DEVICE_NAME                      "FocusLite"
+   #define DEVICE_NAME                      "nrf51"
    #define APP_ADV_INTERVAL                 300                                        /**< The advertising interval (in units of 0.625 ms. This value corresponds to 25 ms). */
    #define APP_ADV_TIMEOUT_IN_SECONDS       180                                        /**< The advertising timeout in units of seconds. */
    #define SEC_PARAM_BOND                   0                                          /**< Perform bonding. */
@@ -40,9 +42,29 @@
    #define SEC_PARAM_MAX_KEY_SIZE           16                                         /**< Maximum encryption key size. */
 #endif   // BLE_INCLUDE
 
+#if defined(PINT_INCLUDE)
+   #define PINT_POLARITY_LOW               0
+   #define PINT_POLARITY_HI                1
+   #define PINT_POLARITY_TOGGLE            2
+
+   #define PINT_NOPULL                     0
+   #define PINT_PULLHI                     1
+   #define PINT_PULLLO                     2
+
+   #define PINT_INT_PINS                   1
+   #define PINT_INT_PIN                    30
+#endif   // PINT_INCLUDE
+
 #if defined(RTC_INCLUDE)
-   #define RTC_FRQ                          1024
+   #define RTC_TICK_FRQ                   100
 #endif   // RTC_INCLUDE
+
+#if defined(TWI_INCLUDE)
+   #define MPU9150
+   #ifdef MPU9150
+      #define NRF51_MPU9150
+   #endif   // MPU9050
+#endif   // TWI_INCLUDE
 
 #if defined(UART_INCLUDE)
 #endif   // UART_INCLUDE
