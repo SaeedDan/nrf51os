@@ -21,6 +21,7 @@
 
 #include "configuration.h"
 
+#define APP_FREQ         10   // App requested frequency. Derived from main Main RTC Clock Freq.
 
 #if defined(RTC_INCLUDE)
    #define APP_HZ_EVENT(counter, hz)     (counter == (RTC_TICK_FRQ / hz))
