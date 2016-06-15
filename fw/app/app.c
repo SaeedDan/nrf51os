@@ -27,9 +27,6 @@
     #include "mpu9150_app.h"
 #endif
 
-#define APP_FREQ         10   // App requested frequency. Derived from main Main RTC Clock Freq.
-
-
 #if defined(RTC_INCLUDE)
    static uint32_t rtc_counter;
 #endif   // RTC_INCLUDE
