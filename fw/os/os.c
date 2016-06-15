@@ -106,7 +106,7 @@ int main(void)
    #endif   // BLE_INCLUDE
 
    // Initialize the port map to a stable setting.      
-   hw_init();      
+   //hw_init();      
          
    // Enable the SoftDevice and set the BLE Handler. 
    SOFTDEVICE_HANDLER_INIT(NRF_CLOCK_LFCLKSRC_XTAL_75_PPM, NULL);

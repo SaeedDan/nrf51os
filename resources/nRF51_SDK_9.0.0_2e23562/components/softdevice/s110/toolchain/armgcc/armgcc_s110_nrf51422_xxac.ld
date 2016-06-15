@@ -1,5 +1,5 @@
 /* Linker script to configure memory regions. */
-
+x
 SEARCH_DIR(.)
 GROUP(-lgcc -lc -lnosys)
 

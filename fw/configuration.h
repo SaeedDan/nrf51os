@@ -21,6 +21,7 @@
 #define PINT_INCLUDE
 #define RTC_INCLUDE
 #define TWI_INCLUDE
+#define COMPFILTER_INCLUDE
 //#define UART_INCLUDE
 // END APPLICATION CONFIGURATION OPTIONS
 
@@ -60,7 +61,10 @@
 #endif   // RTC_INCLUDE
 
 #if defined(TWI_INCLUDE)
-
+   #define MPU9150
+   #ifdef MPU9150
+      #define NRF51_MPU9150
+   #endif   // MPU9050
 #endif   // TWI_INCLUDE
 
 #if defined(UART_INCLUDE)
