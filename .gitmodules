@@ -1,0 +1,6 @@
+[submodule "fw/external/frederick"]
+	path = fw/external/frederick
+	url = https://github.com/FocusLite/frederick.git
+[submodule "fw/external/Six_Axis_Complementary_Filter"]
+	path = fw/external/Six_Axis_Complementary_Filter
+	url = https://github.com/vipinbb/Six_Axis_Complementary_Filter.git
