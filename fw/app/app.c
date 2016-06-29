@@ -39,21 +39,17 @@ static void app_rtc_handler(void)
    rtc_counter++;
 
    if (APP_HZ_EVENT(rtc_counter, APP_FREQ))
-   {  
-      #if defined(BLE_NUS_INCLUDE)
-         #if !defined(NRF51_MPU9150)
-            os_ble_nus_send_data((uint8_t*) &result, sizeof(result));
-         #endif // NRF51_MPU9250
+   {
+      #if defined(NRF51_MPU9150)
+        mpu9150_app_tick();
+      #elif defined(BLE_NUS_INCLUDE)
+        os_ble_nus_send_data((uint8_t*) &result, sizeof(result));
       #endif   // BLE_NUS_INCLUDE
       #if defined(UART_INCLUDE)
          os_uart_send_data((uint8_t*) &result, sizeof(result));
       #endif   // UART_INCLUDE
 
       rtc_counter = 0;
-
-      #if defined(NRF51_MPU9150)
-         mpu9150_app_tick();
-      #endif
    }
 }
 #endif   // RTC_INCLUDE
@@ -81,10 +77,10 @@ bool os_handler(enum OS_EVENT event, uint8_t* data)
      {
         // OS has booted up. Initialize app level modules and drivers.
         // Initialize HW Driver to default configuration.   struct int_param_s int_params;
-        #if defined(PINT_INCLUDE)
-           os_pin_int_set(PINT_INT_PIN, PINT_POLARITY_LOW, PINT_PULLHI);  
-        #endif   // PINT_INCLUDE
         #if defined(NRF51_MPU9150)
+           #if defined(PINT_INCLUDE)
+              os_pin_int_set(PINT_INT_PIN, PINT_POLARITY_LOW, PINT_PULLHI);  
+           #endif   // PINT_INCLUDE
            result = mpu9150_app_init();
         #endif // NRF51_MPU9250
      }
