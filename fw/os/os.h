@@ -31,6 +31,7 @@ enum OS_EVENT
 };
 
 bool os_handler(enum OS_EVENT event, uint8_t* data);
+void os_shut_down(void);
 
 #if defined(BLE_INCLUDE)
    enum OS_BLE_EVENT

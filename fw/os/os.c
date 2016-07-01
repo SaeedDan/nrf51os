@@ -188,6 +188,11 @@ int main(void)
    return -1;
 }
 
+void os_shut_down(void)
+{
+   sd_power_system_off();
+}
+
 #if defined(PINT_INCLUDE)
 void os_pin_int_set(uint8_t pin, uint8_t polarity, uint8_t pulled_up)
 {
